@@ -111,7 +111,8 @@ class Conv2DBlock(nn.Module):
         x = self.activation(x)
         x = self.dropout_layer(x)
         return x
-ass DoubleConvBlock(nn.Module):
+    
+class DoubleConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=3, activation=nn.ReLU(), batch_normalization=False, dropout_rate=0.1):
         super(DoubleConvBlock, self).__init__()
 
@@ -136,11 +137,20 @@ ass DoubleConvBlock(nn.Module):
         )
 
     def forward(self, x):
-        # On appelle les blocs directement, sans le .forward()
+        
         x = self.conv_1(x)
         x = self.conv_2(x)
         return x
 
+class MaxPoolingBlock(nn.Module):
+
+    def __init__(self,kernel_size,stride):
+        super(MaxPoolingBlock,self).__init__()
+        self.max_pool = nn.MaxPool2d(kernel_size=kernel_size,stride=stride)
+    
+    def forward(self,x):
+        return self.max_pool(x)
+    
 class BasicResNetBlock(nn.Module):
     def __init__(
         self,
