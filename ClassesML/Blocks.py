@@ -111,7 +111,8 @@ class Conv2DBlock(nn.Module):
         x = self.activation(x)
         x = self.dropout_layer(x)
         return x
-ass DoubleConvBlock(nn.Module):
+    
+class DoubleConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=3, activation=nn.ReLU(), batch_normalization=False, dropout_rate=0.1):
         super(DoubleConvBlock, self).__init__()
 
