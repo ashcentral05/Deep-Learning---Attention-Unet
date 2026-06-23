@@ -111,7 +111,7 @@ class Conv2DBlock(nn.Module):
         x = self.activation(x)
         x = self.dropout_layer(x)
         return x
-    
+#######################################################################################################################################
 class DoubleConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=3, activation=nn.ReLU(), batch_normalization=False, dropout_rate=0.1):
         super(DoubleConvBlock, self).__init__()
@@ -151,6 +151,44 @@ class MaxPoolingBlock(nn.Module):
     def forward(self,x):
         return self.max_pool(x)
     
+
+class UpConv2DBlock(nn.Module):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=2,            
+        stride=2,                
+        activation=nn.ReLU(),
+        batch_normalization=False,
+        dropout_rate=0.1,
+    ):
+        super(UpConv2DBlock, self).__init__()
+        
+        
+        self.up_conv_layer = nn.ConvTranspose2d(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=0,            
+        )
+        
+        self.activation = activation
+        self.batch_norm_layer = (
+            nn.BatchNorm2d(out_channels) if batch_normalization else None
+        )
+        self.dropout_layer = nn.Dropout(dropout_rate)
+
+    def forward(self, x):
+       
+        x = self.up_conv_layer(x)
+        if self.batch_norm_layer:
+            x = self.batch_norm_layer(x)
+        x = self.activation(x)
+        x = self.dropout_layer(x)
+        return x
+######################################################################################
 class BasicResNetBlock(nn.Module):
     def __init__(
         self,
