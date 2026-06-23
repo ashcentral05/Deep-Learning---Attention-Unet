@@ -112,6 +112,7 @@ class Conv2DBlock(nn.Module):
         x = self.dropout_layer(x)
         return x
     
+cl#######################################################################################################################################
 class DoubleConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size=3, activation=nn.ReLU(), batch_normalization=False, dropout_rate=0.1):
         super(DoubleConvBlock, self).__init__()
@@ -137,11 +138,74 @@ class DoubleConvBlock(nn.Module):
         )
 
     def forward(self, x):
-        # On appelle les blocs directement, sans le .forward()
+        
         x = self.conv_1(x)
         x = self.conv_2(x)
         return x
 
+class MaxPoolingBlock(nn.Module):
+
+    def __init__(self,kernel_size,stride):
+        super(MaxPoolingBlock,self).__init__()
+        self.max_pool = nn.MaxPool2d(kernel_size=kernel_size,stride=stride)
+    
+    def forward(self,x):
+        return self.max_pool(x)
+    
+
+class UpConv2DBlock(nn.Module):
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        kernel_size=2,            
+        stride=2,                
+        activation=nn.ReLU(),
+        batch_normalization=False,
+        dropout_rate=0.1,
+    ):
+        super(UpConv2DBlock, self).__init__()
+        
+        
+        self.up_conv_layer = nn.ConvTranspose2d(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            kernel_size=kernel_size,
+            stride=stride,
+            padding=0,            
+        )
+        
+        self.activation = activation
+        self.batch_norm_layer = (
+            nn.BatchNorm2d(out_channels) if batch_normalization else None
+        )
+        self.dropout_layer = nn.Dropout(dropout_rate)
+
+    def forward(self, x):
+       
+        x = self.up_conv_layer(x)
+        if self.batch_norm_layer:
+            x = self.batch_norm_layer(x)
+        x = self.activation(x)
+        x = self.dropout_layer(x)
+        return x
+
+class AttentionBlock(nn.Module):
+    def __init__(self, F_g, F_l, F_int,activation=nn.ReLU,dropout_rate=0.1):
+        super(AttentionBlock, self).__init__()
+        self.W_g = Conv2DBlock(in_channels=F_g,out_channels=F_int,kernel_size=1,stride=1,padding=0) 
+        self.W_x = nn.Sequential(nn.Conv2d(F_l, F_int, kernel_size=1, stride=1, padding=0, bias=True), nn.BatchNorm2d(F_int))
+        self.psi = nn.Sequential(nn.Conv2d(F_int, 1, kernel_size=1, stride=1, padding=0, bias=True), nn.BatchNorm2d(1), nn.Sigmoid())
+        self.relu = nn.ReLU(inplace=True)
+
+    def forward(self, g, x):
+        g1 = self.W_g(g)
+        x1 = self.W_x(x)
+        psi = self.relu(g1 + x1)
+        psi = self.psi(psi)
+        return x * psi
+    
+######################################################################################
 class BasicResNetBlock(nn.Module):
     def __init__(
         self,
