@@ -111,7 +111,35 @@ class Conv2DBlock(nn.Module):
         x = self.activation(x)
         x = self.dropout_layer(x)
         return x
+ass DoubleConvBlock(nn.Module):
+    def __init__(self, in_channels, out_channels, kernel_size=3, activation=nn.ReLU(), batch_normalization=False, dropout_rate=0.1):
+        super(DoubleConvBlock, self).__init__()
 
+        # Première convolution : fait passer les canaux de in_channels à out_channels
+        self.conv_1 = Conv2DBlock(
+            in_channels=in_channels,
+            out_channels=out_channels,
+            kernel_size=kernel_size,
+            activation=activation,
+            batch_normalization=batch_normalization,
+            dropout_rate=dropout_rate
+        )
+
+        # Deuxième convolution : reste à out_channels
+        self.conv_2 = Conv2DBlock(
+            in_channels=out_channels,
+            out_channels=out_channels,
+            kernel_size=kernel_size,
+            activation=activation,
+            batch_normalization=batch_normalization,
+            dropout_rate=dropout_rate
+        )
+
+    def forward(self, x):
+        # On appelle les blocs directement, sans le .forward()
+        x = self.conv_1(x)
+        x = self.conv_2(x)
+        return x
 
 class BasicResNetBlock(nn.Module):
     def __init__(
