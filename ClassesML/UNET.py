@@ -88,7 +88,7 @@ class UNET(nn.Module):
             
 
     def forward(self, x):
-        x = self.first_conv(x)
+
         skip_connections = []
 
         for encoder_block in self.encoder_layers:
@@ -102,7 +102,8 @@ class UNET(nn.Module):
         x = self.bottle_neck_layer(x)
 
         for i, decoder_block in enumerate(self.decoder_layers):
-            x = torch.cat(skip_connections[i], x)
             x = decoder_block(x)
+            x = torch.cat(skip_connections[i], x)
+            
 
 
