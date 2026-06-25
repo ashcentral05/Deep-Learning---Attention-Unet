@@ -1,0 +1,38 @@
+#---------------------------------------------------------------------------------
+06.25 Wang
+1.created ScopeUNET in Scope.py
+2.created TrainerUNET in TrainerClassifier.py
+3.Training log (first 5 epoches):
+                    epoch:1/50
+                    train_loss:0.520871128850054
+                    train_accuracy:0.8124002055956585
+                    epoch:1/50
+                    valid_loss:0.41024494230157077
+                    valid_accuracy:0.8519766507762494
+                    epoch:2/50
+                    train_loss:0.42102564045108193
+                    train_accuracy:0.8526006035580493
+                    epoch:2/50
+                    valid_loss:0.3536322478315618
+                    valid_accuracy:0.8633662184866349
+                    epoch:3/50
+                    train_loss:0.3649892240467638
+                    train_accuracy:0.872410369686561
+                    epoch:3/50
+                    valid_loss:0.3112909212560937
+                    valid_accuracy:0.8755079566842259
+                    epoch:4/50
+                    train_loss:0.32832849508907536
+                    train_accuracy:0.8810984518858466
+                    epoch:4/50
+                    valid_loss:0.29544856996819524
+                    valid_accuracy:0.8755218534186335
+                    epoch:5/50
+                    train_loss:0.30285940064799666
+                    train_accuracy:0.8860600741192846
+                    epoch:5/50
+                    valid_loss:0.2841208364703868
+                    valid_accuracy:0.8760654365662301
+4.trained and validated with dataset image size 128*128. 
+You can try image size 256*256 if cuda memory allows. (The preprocessed file in Dataset/UNET is still 256*256).
+#-----------------------------------------------------------------------------------------------------------
