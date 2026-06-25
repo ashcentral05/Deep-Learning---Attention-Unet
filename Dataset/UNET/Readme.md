@@ -1,12 +1,12 @@
 #data reprocessing and load  
 
-#to check if raw image can match with labels
+#to check if raw image can match with labels  
 PairCheck.py 
 
-#preprocess
-Preprocess.py
+#preprocess  
+Preprocess.py  
 
-#load data
+#load data  
 DatasetLoader.py  
 
 #--------------------------------------------------------------------
@@ -19,10 +19,10 @@ val_label_batches.pt https://drive.google.com/file/d/1XbNXrq_Ji3VV8xDe0YlqSgnsWN
 
 
 #-----------------------------------------------
-If  cuda memory is not enough, you can use the preprocessed data below:
-(the image size is reduced to 128*128)
+If  cuda memory is not enough, you can use the preprocessed data below:  
+(the image size is reduced to 128*128)  
 
-train_data_batches128.pt  
-val_data_batches128.pt
-train_label_batches128.pt
-val_label_batches128.pt
+train_data_batches128.pt   
+val_data_batches128.pt  
+train_label_batches128.pt  
+val_label_batches128.pt  
