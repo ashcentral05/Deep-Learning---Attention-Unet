@@ -2,6 +2,7 @@
 06.25 Wang
 1.created ScopeUNET in Scope.py
 2.created TrainerUNET in TrainerClassifier.py
+3.created main file UNET.py
 3.Training log (first 5 epoches):
                     epoch:1/50
                     train_loss:0.520871128850054
@@ -33,7 +34,39 @@
                     epoch:5/50
                     valid_loss:0.2841208364703868
                     valid_accuracy:0.8760654365662301
-4.trained and validated with dataset image size 128*128. 
+last 5 epoches:
+(didnot add early stopping; too late so I selected epoch 31-35)
+                    epoch:31/50
+                    train_loss:0.1710990191907576
+                    train_accuracy:0.930041592457507
+                    epoch:31/50
+                    valid_loss:0.29132913436629987
+                    valid_accuracy:0.8807936670756576
+                    epoch:32/50
+                    train_loss:0.16917809751806873
+                    train_accuracy:0.9308200322165348
+                    epoch:32/50
+                    valid_loss:0.2870632233005939
+                    valid_accuracy:0.8835070924003525
+                    epoch:33/50
+                    train_loss:0.1674804298926403
+                    train_accuracy:0.9314296459502512
+                    epoch:33/50
+                    valid_loss:0.29154388724577307
+                    valid_accuracy:0.8873206872751217
+                    epoch:34/50
+                    train_loss:0.16466024862878983
+                    train_accuracy:0.9326722403564075
+                    epoch:34/50
+                    valid_loss:0.28765446641067466
+                    valid_accuracy:0.8868545358723933
+                    epoch:35/50
+                    train_loss:0.16211658085484315
+                    train_accuracy:0.9337041254090791
+                    epoch:35/50
+                    valid_loss:0.29336396140037196
+                    valid_accuracy:0.8856220717477327
+5.trained and validated with dataset image size 128*128. 
 The preprocessed data with smaller image size(128*128) is also uploaded in Dataset/UNET/Readme.md
 You can try image size 256*256 if cuda memory allows. (The preprocessed file in Dataset/UNET is still 256*256).
 #-----------------------------------------------------------------------------------------------------------
