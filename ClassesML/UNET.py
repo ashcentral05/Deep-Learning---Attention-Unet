@@ -71,7 +71,7 @@ class UNET(nn.Module):
         self.attention_layers = nn.ModuleList() 
     
     
-        for i in range(self.n_conv_layers - 1, 0, -1):
+        for i in range(self.n_conv_layers - 1, -1, -1):
         
            
             in_up = self.filters[i] * 2 if i == self.n_conv_layers - 1 else self.filters[i] #this condition is used to handle the bottleneck which starts at 1024
