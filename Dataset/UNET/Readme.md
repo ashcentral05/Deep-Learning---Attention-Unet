@@ -23,6 +23,6 @@ If  cuda memory is not enough, you can use the preprocessed data below:
 (the image size is reduced to 128*128)  
 
 train_data_batches128.pt https://drive.google.com/file/d/1RCi5UeItYTlwhJsC88GwB8STcTVWUyDC/view?usp=sharing  
-val_data_batches128.pt https://drive.google.com/file/d/1QJLd6jxaAivr7B8nr-E-mJVZ1nYQGoKK/view?usp=sharing
-train_label_batches128.pt https://drive.google.com/file/d/1yiGHi_mEfT3ZUUYm6O8SCRLEMWp_wjbp/view?usp=sharing
-val_label_batches128.pt https://drive.google.com/file/d/1ZspbELQuYvqz82YG7MdXuUNdzZ_sjH7O/view?usp=sharing
+val_data_batches128.pt https://drive.google.com/file/d/1QJLd6jxaAivr7B8nr-E-mJVZ1nYQGoKK/view?usp=sharing  
+train_label_batches128.pt https://drive.google.com/file/d/1yiGHi_mEfT3ZUUYm6O8SCRLEMWp_wjbp/view?usp=sharing  
+val_label_batches128.pt https://drive.google.com/file/d/1ZspbELQuYvqz82YG7MdXuUNdzZ_sjH7O/view?usp=sharing  
