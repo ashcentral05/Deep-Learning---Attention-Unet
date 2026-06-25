@@ -29,7 +29,7 @@ hyperparameters = dict(input_dim = 1,
                         dropout_rate = 0.01,
                         learning_rate = 0.0001,
                         early_stopping = True,
-                        max_epochs = 50)
+                        max_epochs = 10)
 
 model = UNET(hyperparameters).to(device)
 print(model)
