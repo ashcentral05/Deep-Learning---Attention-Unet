@@ -20,7 +20,7 @@ train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_da
 
 hyperparameters = dict(input_dim = 1,
                         output_dim = 1,
-                        filters = [16, 32, 64, 128],
+                        filters = [32, 64, 128, 256],
                         kernel_size = 2,
                         embedding_dim = None,
                         d_model = None,
@@ -29,7 +29,7 @@ hyperparameters = dict(input_dim = 1,
                         dropout_rate = 0.01,
                         learning_rate = 0.0001,
                         early_stopping = True,
-                        max_epochs = 10)
+                        max_epochs = 30)
 
 model = UNET(hyperparameters).to(device)
 print(model)
