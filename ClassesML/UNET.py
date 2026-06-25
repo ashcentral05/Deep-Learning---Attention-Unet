@@ -142,7 +142,7 @@ class UNET(nn.Module):
             decoder_idx += 2
             
         final_layer = self.decoder_layers[-1]
-        logits = final_layer(x)
+        output = final_layer(x)
         
-        return logits
+        return output
 
