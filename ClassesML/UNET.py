@@ -107,7 +107,8 @@ class UNET(nn.Module):
             self.decoder_layers.append(conv_layer)
         
         #one last 1D convolution
-        layer = nn.Conv2d(in_channels=self.filters[0],out_channels=1,kernel_size=1)
+        layer = Conv2DBlock(in_channels=self.filters[0],out_channels=1,activation=Utilities.get_activation('sigmoid'),kernel_size=1,batch_normalization=False,dropout_rate=0.0) 
+        
         self.decoder_layers.append(layer)
 
     def forward(self, x):
