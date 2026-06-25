@@ -34,5 +34,6 @@
                     valid_loss:0.2841208364703868
                     valid_accuracy:0.8760654365662301
 4.trained and validated with dataset image size 128*128. 
+The preprocessed data with smaller image size(128*128) is also uploaded in Dataset/UNET/Readme.md
 You can try image size 256*256 if cuda memory allows. (The preprocessed file in Dataset/UNET is still 256*256).
 #-----------------------------------------------------------------------------------------------------------
