@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from ClassesML.UNETBlocks import *
+from ClassesML.Blocks import *
 from Utilities.Utilities import Utilities
 
 
