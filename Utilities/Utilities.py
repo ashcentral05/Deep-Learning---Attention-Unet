@@ -125,3 +125,21 @@ class Utilities:
         ax.set_title(title)
 
         plt.show()
+
+    @staticmethod
+    def plot_curves(train_loss_list, valid_loss_list, train_accuracy_list, valid_accuracy_list):
+        plt.figure()
+        plt.plot(train_loss_list, label='train')
+        plt.plot(valid_loss_list, label='val')
+        plt.xlabel('epoch')
+        plt.ylabel('loss')
+        plt.legend()
+        plt.show()
+
+        plt.figure()
+        plt.plot(train_accuracy_list, label='train')
+        plt.plot(valid_accuracy_list, label='val')
+        plt.xlabel('epoch')
+        plt.ylabel('accuracy')
+        plt.legend()
+        plt.show()
