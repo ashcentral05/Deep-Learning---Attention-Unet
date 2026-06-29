@@ -57,6 +57,13 @@ class Utilities:
         return accuracy
 
     @staticmethod
+    def IoULoss(y_hat,y):
+        epsilon = 1e-6
+        Intersection = (y_hat*y).sum()
+        Union = y.sum() + y_hat.sum()
+        return Intersection/(Union + epsilon)
+     
+    @staticmethod
     def plot_confusion_matrix_fashion(y, y_hat):
 
         accuracy = Utilities.compute_accuracy(y_hat, y)

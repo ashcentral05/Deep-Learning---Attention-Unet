@@ -2,7 +2,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.optim.lr_scheduler import StepLR, ReduceLROnPlateau
 from ClassesML.EarlyStopper import EarlyStopper
-
+from Utilities.Utilities import Utilities
 
 class ScopeClassifier:
 
@@ -42,9 +42,9 @@ class ScopeAutoEncoder:
         self.optimizer = optim.Adam(autoencoder_parameters,lr=hyperparameters['learning_rate'])
 
 class ScopeUNET:
-    def __init__(self, model, hyperparameters):
+    def __init__(self, model, hyperparameters,ioubool=False):
 
-        self.criterion = nn.BCELoss()
+        self.criterion = nn.BCELoss() if not ioubool else Utilities.IoULoss
         self.optimizer = optim.Adam(model.parameters(),
                                     lr=hyperparameters['learning_rate'])
 
