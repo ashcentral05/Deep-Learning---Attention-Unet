@@ -58,10 +58,15 @@ class Utilities:
 
     @staticmethod
     def IoULoss(y_hat,y):
+        
+        
+        y_hat_flat = y_hat.view(-1)
+        y_flat = y.view(-1)
+        
         epsilon = 1e-6
         Intersection = (y_hat*y).sum()
-        Union = y.sum() + y_hat.sum()
-        return Intersection/(Union + epsilon)
+        Union = y.sum() + y_hat.sum() - Intersection
+        return 1-Intersection/(Union + epsilon)
      
     @staticmethod
     def plot_confusion_matrix_fashion(y, y_hat):

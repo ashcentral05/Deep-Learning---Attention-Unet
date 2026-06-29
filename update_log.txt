@@ -128,3 +128,7 @@ You can try image size 256*256 if cuda memory allows. (The preprocessed file in 
 2.added visualization.py in ClassML
 3.updated UNET.py with visualization code
 4.tested locally with 256*256 images. Training log:
+
+Ashvin
+1. Added the IoU Loss method in Utilities.Utilities
+2. You can change the Loss by changing the parameter ioubool to True in ScopeUNET
