@@ -4,6 +4,7 @@ import matplotlib
 from torch import cpu
 
 matplotlib.use('Agg')
+import time
 import matplotlib.pyplot as plt
 from ClassesData.DatasetLoader import DatasetLoader
 from ClassesML.UNET import UNET
@@ -12,6 +13,8 @@ from ClassesML.TrainerClassifier import TrainerUNET
 import torch
 import torch.optim as optim
 from torchinfo import summary
+
+print(time.time())
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 path_parent_project = os.getcwd()
 dataset_image_path = path_parent_project + "\\Dataset\\"+"\\UNET\\"
@@ -20,7 +23,7 @@ train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_da
 
 hyperparameters = dict(input_dim = 1,
                         output_dim = 1,
-                        filters = [32, 64, 128, 256],
+                        filters = [32, 64, 128, 256], #adjust the filters size for your device
                         kernel_size = 2,
                         embedding_dim = None,
                         d_model = None,
@@ -49,4 +52,10 @@ trainer.set_model(model=model,device=device)
 trainer.set_scope(scope=scope)
 trainer.set_data(x_train=x_train,y_train=y_train,
                  x_valid=x_val,y_valid=y_val,)
-train_accuracy_list, valid_accuracy_list = trainer.run()
+train_accuracy_list, valid_accuracy_list, train_loss_list, valid_loss_list = trainer.run()
+
+#visualization
+visualize_predictions(model, x_val[0], y_val[0], device, n_samples=4)
+Utilities.plot_curves(train_loss_list, valid_loss_list, train_accuracy_list, valid_accuracy_list)
+
+print(time.time())
