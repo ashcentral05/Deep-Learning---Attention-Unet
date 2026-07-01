@@ -31,15 +31,23 @@ class ScopeClassifier:
 
 class ScopeUNET:
     def __init__(
-        self, model, hyperparameters, ioubool=False, dicebool=False, weight_decay=0.0
+        self,
+        model,
+        hyperparameters,
+        msebool=False,
+        ioubool=False,
+        dicebool=False,
+        weight_decay=0.0,
     ):
 
         if ioubool:
             self.criterion = Utilities.IoULoss
         elif dicebool:
             self.criterion = Utilities.DiceBCELoss
-        else:
+        elif msebool:
             self.criterion = nn.MSELoss()
+        else:
+            self.criterion = nn.BCELoss()
 
         self.optimizer = optim.Adam(
             model.parameters(),
