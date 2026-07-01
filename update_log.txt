@@ -1,0 +1,203 @@
+#---------------------------------------------------------------------------------
+06.25 Wang
+1.created ScopeUNET in Scope.py
+2.created TrainerUNET in TrainerClassifier.py
+3.created main file UNET.py
+3.Training log (with earlly stopping):
+I HAVE TO SAY THAT I FORGOT TO ADJUST THE PATIENCE OF EARLY STOPPING AND APPEARANTLY PATIENCE=20 IS TOO BIG.
+so i just early stopped at pacience 6 because the training takes too much time.
+                    epoch:1/50
+                    train_loss:0.515984500767571
+                    train_accuracy:0.7969094187316328
+                    epoch:1/50
+                    valid_loss:0.3908132282224032
+                    valid_accuracy:0.8593987822532654
+                    Epoch0 - keeping weights
+                    epoch:2/50
+                    train_loss:0.41282048946855093
+                    train_accuracy:0.8556421232400554
+                    epoch:2/50
+                    valid_loss:0.341505896632034
+                    valid_accuracy:0.8704227008441887
+                    Epoch1 - best metrics:0.8704227008441887 - Keeping weights
+                    epoch:3/50
+                    train_loss:0.35694856447453543
+                    train_accuracy:0.8718426596410204
+                    epoch:3/50
+                    valid_loss:0.30848319135089913
+                    valid_accuracy:0.8781964601856647
+                    Epoch2 - best metrics:0.8781964601856647 - Keeping weights
+                    epoch:4/50
+                    train_loss:0.319248144690058
+                    train_accuracy:0.8814160660056785
+                    epoch:4/50
+                    valid_loss:0.29029810517141136
+                    valid_accuracy:0.879238489240703
+                    Epoch3 - best metrics:0.879238489240703 - Keeping weights
+                    epoch:5/50
+                    train_loss:0.29490854605884836
+                    train_accuracy:0.8872894101803845
+                    epoch:5/50
+                    valid_loss:0.28053058831408473
+                    valid_accuracy:0.8807331630499056
+                    Epoch4 - best metrics:0.8807331630499056 - Keeping weights
+                    epoch:6/50
+                    train_loss:0.27828811496348665
+                    train_accuracy:0.8915732910137365
+                    epoch:6/50
+                    valid_loss:0.2735613414851746
+                    valid_accuracy:0.88308980736402
+                    Epoch5 - best metrics:0.88308980736402 - Keeping weights
+                    epoch:7/50
+                    train_loss:0.26581185657789214
+                    train_accuracy:0.8949145543398244
+                    epoch:7/50
+                    valid_loss:0.2707461590814118
+                    valid_accuracy:0.8835170032954452
+                    Epoch6 - best metrics:0.8835170032954452 - Keeping weights
+                    epoch:8/50
+                    train_loss:0.2557793976646839
+                    train_accuracy:0.898083569537295
+                    epoch:8/50
+                    valid_loss:0.2741609311634951
+                    valid_accuracy:0.8838397872329938
+                    Epoch7 - best metrics:0.8838397872329938 - Keeping weights
+                    epoch:9/50
+                    train_loss:0.24714552131619785
+                    train_accuracy:0.9009882888876566
+                    epoch:9/50
+                    valid_loss:0.27030560536549825
+                    valid_accuracy:0.88400531464284
+                    Epoch8 - best metrics:0.88400531464284 - Keeping weights
+                    epoch:10/50
+                    train_loss:0.2391572292931009
+                    train_accuracy:0.9039086069505994
+                    epoch:10/50
+                    valid_loss:0.26225506374151397
+                    valid_accuracy:0.8866190219869708
+                    Epoch9 - best metrics:0.8866190219869708 - Keeping weights
+                    epoch:11/50
+                    train_loss:0.2323062124450018
+                    train_accuracy:0.9063457977948802
+                    epoch:11/50
+                    valid_loss:0.26355538200033773
+                    valid_accuracy:0.8856995613268106
+                    Epoch10 - Metrics did not improve, wait1
+                    epoch:12/50
+                    train_loss:0.22651762017371632
+                    train_accuracy:0.9086918851526657
+                    epoch:12/50
+                    valid_loss:0.2644177681148642
+                    valid_accuracy:0.8865949729881665
+                    Epoch11 - Metrics did not improve, wait2
+                    epoch:13/50
+                    train_loss:0.22042470353443433
+                    train_accuracy:0.9109137400542155
+                    epoch:13/50
+                    valid_loss:0.27001116668233777
+                    valid_accuracy:0.8851738330161217
+                    Epoch12 - Metrics did not improve, wait3
+                    epoch:14/50
+                    train_loss:0.21553232972648476
+                    train_accuracy:0.9128836803507097
+                    epoch:14/50
+                    valid_loss:0.27172933622161943
+                    valid_accuracy:0.8856950089482978
+                    Epoch13 - Metrics did not improve, wait4
+                    epoch:15/50
+                    train_loss:0.21085715856366227
+                    train_accuracy:0.9144967564261786
+                    epoch:15/50
+                    valid_loss:0.26869028142773277
+                    valid_accuracy:0.8858678388123465
+                    Epoch14 - Metrics did not improve, wait5
+                    epoch:16/50
+                    train_loss:0.20630653873823657
+                    train_accuracy:0.9163707264579168
+                    epoch:16/50
+                    valid_loss:0.2805463193666817
+                    valid_accuracy:0.8844360532146869
+                    Epoch15 - Metrics did not improve, wait6
+5.trained and validated with dataset image size 128*128. 
+The preprocessed data with smaller image size(128*128) is also uploaded in Dataset/UNET/Readme.md
+You can try image size 256*256 if cuda memory allows. (The preprocessed file in Dataset/UNET is still 256*256).
+#-----------------------------------------------------------------------------------------------------------
+
+06.29 Wang
+1.added plot_curves in Utilities.Utilities
+2.added visualization.py in ClassML
+3.updated UNET.py with visualization code
+4.tested locally with 256*256 images. Training log:
+
+Ashvin
+1. Added the IoU Loss method in Utilities.Utilities
+2. You can change the Loss by changing the parameter ioubool to True in ScopeUNET
+#--------------------------------------------------------------------------------------------------------------
+01.07
+Ashvin
+Training the model with the IoU Loss and a Dropout_rate of 0.07 instead of 0.01
+epoch:1/30
+train_loss:0.6348994964420205
+train_accuracy:0.8351544522412933
+epoch:1/30
+valid_loss:0.5677623371086499
+valid_accuracy:0.8586175270599894
+Epoch0 - keeping weights
+epoch:2/30
+train_loss:0.5338762384830135
+train_accuracy:0.8550131163089583
+epoch:2/30
+valid_loss:0.5014121703582235
+valid_accuracy:0.866872514828597
+Epoch1 - best metrics:0.866872514828597 - Keeping weights
+epoch:3/30
+train_loss:0.47793172712963405
+train_accuracy:0.8650881884121658
+epoch:3/30
+valid_loss:0.46437575793502356
+valid_accuracy:0.8714715283696014
+Epoch2 - best metrics:0.8714715283696014 - Keeping weights
+epoch:4/30
+train_loss:0.4427469375700054
+train_accuracy:0.8724476711289717
+epoch:4/30
+valid_loss:0.45049184619790256
+valid_accuracy:0.8749954369988772
+Epoch3 - best metrics:0.8749954369988772 - Keeping weights
+epoch:5/30
+train_loss:0.41874240294541465
+train_accuracy:0.8780433066410593
+epoch:5/30
+valid_loss:0.4368274955466242
+valid_accuracy:0.8764804253483763
+Epoch4 - best metrics:0.8764804253483763 - Keeping weights
+epoch:6/30
+train_loss:0.4015366433575602
+train_accuracy:0.8828601214555231
+epoch:6/30
+valid_loss:0.43100048763917226
+valid_accuracy:0.8784127890473545
+Epoch5 - best metrics:0.8784127890473545 - Keeping weights
+epoch:7/30
+train_loss:0.39245013346766483
+train_accuracy:0.8848283043002138
+epoch:7/30
+valid_loss:0.4219241744220847
+valid_accuracy:0.8778711173794057
+Epoch6 - Metrics did not improve, wait1
+epoch:8/30
+train_loss:0.3817658093896243
+train_accuracy:0.8884273584526364
+epoch:8/30
+valid_loss:0.4072412051776848
+valid_accuracy:0.8824962666719267
+Epoch7 - best metrics:0.8824962666719267 - Keeping weights
+epoch:9/30
+train_loss:0.37607925820468674
+train_accuracy:0.8902547890597051
+epoch:9/30
+valid_loss:0.42482847624486036
+valid_accuracy:0.8788528212226263
+Epoch8 - Metrics did not improve, wait1
+Similar results as IoU is a geometric loss meaning it is better at fine tuning finding more refined details
+but the model can't do this yet. There's overfitting as well. Maybe try to increase the dropout_rate even more.

@@ -2,7 +2,7 @@ import os
 import numpy as np
 
 import matplotlib
-matplotlib.use("TkAgg")
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from sklearn.metrics import confusion_matrix
@@ -56,6 +56,18 @@ class Utilities:
 
         return accuracy
 
+    @staticmethod
+    def IoULoss(y_hat,y):
+        
+        
+        y_hat_flat = y_hat.view(-1)
+        y_flat = y.view(-1)
+        
+        epsilon = 1e-6
+        Intersection = (y_hat*y).sum()
+        Union = y.sum() + y_hat.sum() - Intersection
+        return 1-Intersection/(Union + epsilon)
+     
     @staticmethod
     def plot_confusion_matrix_fashion(y, y_hat):
 
@@ -124,4 +136,22 @@ class Utilities:
         ax.axis("off")
         ax.set_title(title)
 
+        plt.show()
+
+    @staticmethod
+    def plot_curves(train_loss_list, valid_loss_list, train_accuracy_list, valid_accuracy_list):
+        plt.figure()
+        plt.plot(train_loss_list, label='train')
+        plt.plot(valid_loss_list, label='val')
+        plt.xlabel('epoch')
+        plt.ylabel('loss')
+        plt.legend()
+        plt.show()
+
+        plt.figure()
+        plt.plot(train_accuracy_list, label='train')
+        plt.plot(valid_accuracy_list, label='val')
+        plt.xlabel('epoch')
+        plt.ylabel('accuracy')
+        plt.legend()
         plt.show()
