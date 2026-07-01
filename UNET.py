@@ -22,7 +22,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 path_parent_project = os.getcwd()
 dataset_image_path = path_parent_project + "\\Dataset\\"+"\\UNET\\"
 dataset = DatasetLoader(root=dataset_image_path)
-train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_data()
+train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_data(size=128)
 
 hyperparameters = dict(input_dim = 1,
                         output_dim = 1,
@@ -39,7 +39,7 @@ hyperparameters = dict(input_dim = 1,
 
 model = UNET(hyperparameters).to(device)
 print(model)
-scope = ScopeUNET(model,hyperparameters)
+scope = ScopeUNET(model,hyperparameters, weight_decay=1e-4)
 
 input_size = (4, input_dim[0], input_dim[1], input_dim[2])
 input_data = torch.rand(input_size, device=device)
