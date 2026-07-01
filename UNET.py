@@ -26,11 +26,10 @@ hyperparameters = dict(input_dim = 1,
                         output_dim = 1,
                         filters = [32, 64, 128, 256], #adjust the filters size for your device
                         kernel_size = 2,
-                        embedding_dim = None,
-                        d_model = None,
                         activation = 'relu',
                         batch_normalization = True,
-                        dropout_rate = 0.01,
+                        embedding_dim = None,
+                        dropout_rate = 0.1,
                         learning_rate = 0.0001,
                         early_stopping = True,
                         max_epochs = 10)
