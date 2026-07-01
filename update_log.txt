@@ -201,3 +201,165 @@ valid_accuracy:0.8788528212226263
 Epoch8 - Metrics did not improve, wait1
 Similar results as IoU is a geometric loss meaning it is better at fine tuning finding more refined details
 but the model can't do this yet. There's overfitting as well. Maybe try to increase the dropout_rate even more.
+
+
+--------------------------------
+07.01
+
+
+dropout_rate:0.05
+filters = [32, 64, 128, 256]
+inputdata:[4,1,256,256]
+with weight_decay 1e-4
+
+traininglog:
+Wed Jul  1 18:57:22 2026
+epoch:1/30
+train_loss:0.13548366258861405
+train_accuracy:0.8517767112739015
+epoch:1/30
+valid_loss:0.10657191479412637
+valid_accuracy:0.8590941452743983
+Epoch 1 - keeping weights
+epoch:2/30
+train_loss:0.10683739484094157
+train_accuracy:0.8719938658546693
+epoch:2/30
+valid_loss:0.1022502082483013
+valid_accuracy:0.8596965458133433
+Epoch 2 - best metrics:0.8596965458133433 - Keeping weights
+epoch:3/30
+train_loss:0.09811646131669531
+train_accuracy:0.875171355534308
+epoch:3/30
+valid_loss:0.10032873283518423
+valid_accuracy:0.8615411177720174
+Epoch 3 - best metrics:0.8615411177720174 - Keeping weights
+epoch:4/30
+train_loss:0.09364724852661095
+train_accuracy:0.8777168604111908
+epoch:4/30
+valid_loss:0.09704158215387033
+valid_accuracy:0.8657818932344418
+Epoch 4 - best metrics:0.8657818932344418 - Keeping weights
+epoch:5/30
+train_loss:0.09011285500324304
+train_accuracy:0.8809236476917078
+epoch:5/30
+valid_loss:0.1009338462337999
+valid_accuracy:0.8628138049994365
+Learning rate changed from 0.0001 to 1e-05 at epoch 4
+Epoch5 - Metrics did not improve, wait1
+epoch:6/30
+train_loss:0.08906824904318789
+train_accuracy:0.8818723118246192
+epoch:6/30
+valid_loss:0.09811977625335797
+valid_accuracy:0.8672152692728704
+Epoch 6 - best metrics:0.8672152692728704 - Keeping weights
+epoch:7/30
+train_loss:0.08594530592165371
+train_accuracy:0.8867351231303545
+epoch:7/30
+valid_loss:0.09691321462540343
+valid_accuracy:0.8691743724416978
+Epoch 7 - best metrics:0.8691743724416978 - Keeping weights
+epoch:8/30
+train_loss:0.0843506850634176
+train_accuracy:0.889305062223189
+epoch:8/30
+valid_loss:0.09586935346521953
+valid_accuracy:0.8705141963344989
+Epoch 8 - best metrics:0.8705141963344989 - Keeping weights
+epoch:9/30
+train_loss:0.08309975557840697
+train_accuracy:0.8911196738481522
+epoch:9/30
+valid_loss:0.09504541138758754
+valid_accuracy:0.8715986939940122
+Epoch 9 - best metrics:0.8715986939940122 - Keeping weights
+epoch:10/30
+train_loss:0.08204323099465063
+train_accuracy:0.892535743884521
+epoch:10/30
+valid_loss:0.09489778075182792
+valid_accuracy:0.8717714129108014
+Epoch 10 - best metrics:0.8717714129108014 - Keeping weights
+epoch:11/30
+train_loss:0.08114438676413628
+train_accuracy:0.8936315332308854
+epoch:11/30
+valid_loss:0.09516510083386213
+valid_accuracy:0.8712924506404612
+Learning rate changed from 1e-05 to 1.0000000000000002e-06 at epoch 10
+Epoch11 - Metrics did not improve, wait1
+epoch:12/30
+train_loss:0.08051497040150485
+train_accuracy:0.8942836806325629
+epoch:12/30
+valid_loss:0.09779619635774357
+valid_accuracy:0.8680363787282811
+Learning rate changed from 1.0000000000000002e-06 to 1.0000000000000002e-07 at epoch 11
+Epoch12 - Metrics did not improve, wait2
+epoch:13/30
+train_loss:0.08003657379436611
+train_accuracy:0.8949885831610991
+epoch:13/30
+valid_loss:0.09786924019013302
+valid_accuracy:0.8679332131206399
+Learning rate changed from 1.0000000000000002e-07 to 1.0000000000000004e-08 at epoch 12
+Epoch13 - Metrics did not improve, wait3
+epoch:14/30
+train_loss:0.07996653426106613
+train_accuracy:0.8951247009900537
+epoch:14/30
+valid_loss:0.09784807073007716
+valid_accuracy:0.8679620263600113
+Epoch14 - Metrics did not improve, wait4
+epoch:15/30
+train_loss:0.07997960493079212
+train_accuracy:0.8951045283586672
+epoch:15/30
+valid_loss:0.09790875419679254
+valid_accuracy:0.8678658669537836
+Epoch15 - Metrics did not improve, wait5
+epoch:16/30
+train_loss:0.0799410369818901
+train_accuracy:0.8951585266259637
+epoch:16/30
+valid_loss:0.09792345345462902
+valid_accuracy:0.8678358610313718
+Epoch16 - Metrics did not improve, wait6
+epoch:17/30
+train_loss:0.07992643367794186
+train_accuracy:0.8951737392361802
+epoch:17/30
+valid_loss:0.0979205995871879
+valid_accuracy:0.8678566010871737
+Epoch17 - Metrics did not improve, wait7
+epoch:18/30
+train_loss:0.07994967869639692
+train_accuracy:0.8951389450247925
+epoch:18/30
+valid_loss:0.0979083631519634
+valid_accuracy:0.8678696072927796
+Epoch18 - Metrics did not improve, wait8
+epoch:19/30
+train_loss:0.07997598897407551
+train_accuracy:0.8951189637479215
+epoch:19/30
+valid_loss:0.09797340384361768
+valid_accuracy:0.8677483478395065
+Epoch19 - Metrics did not improve, wait9
+epoch:20/30
+train_loss:0.0799644133260492
+train_accuracy:0.895092618642467
+epoch:20/30
+valid_loss:0.09796858575231958
+valid_accuracy:0.8677636337752389
+Epoch20 - Metrics did not improve, wait10
+Epoch20Patience reached - Stop training at epoch 19 - Restoring weights
+Wed Jul  1 19:13:40 2026
+
+
+
