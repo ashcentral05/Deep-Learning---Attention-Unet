@@ -79,35 +79,3 @@ class DatasetLoader:
         val_dataset = [[data_X_test], [data_Y_test]]
 
         return train_dataset, val_dataset, input_dim, n_classes
-
-# Custom dataset class for tokenization
-class AGNewsDataset(Dataset):
-
-    def __init__(self, dataset, tokenizer, max_len):
-
-        super(AGNewsDataset, self).__init__()
-
-        self.texts = dataset['text']
-        self.labels = dataset['label']
-        self.tokenizer = tokenizer
-        self.max_len = max_len
-
-    def __len__(self):
-        return len(self.texts)
-
-    def __getitem__(self, idx):
-
-        texts = str(self.texts[idx])
-        labels = self.labels[idx]
-
-        encoding = self.tokenizer(texts,
-                                  add_special_tokens=True,
-                                  max_length=self.max_len,
-                                  truncation=True,
-                                  padding='max_length',
-                                  return_tensors='pt')
-
-        return {'input_text': texts,
-                'input_ids': encoding['input_ids'].flatten(),
-                'attention_mask': encoding['attention_mask'].flatten(),
-                'targets': torch.tensor(labels, dtype=torch.long)}
