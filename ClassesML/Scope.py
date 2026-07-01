@@ -42,9 +42,15 @@ class ScopeAutoEncoder:
         self.optimizer = optim.Adam(autoencoder_parameters,lr=hyperparameters['learning_rate'])
 
 class ScopeUNET:
-    def __init__(self, model, hyperparameters,ioubool=False):
+    def __init__(self, model, hyperparameters,ioubool=False, dicebool=False):
 
-        self.criterion = nn.BCELoss() if not ioubool else Utilities.IoULoss
+        if ioubool:
+            self.criterion = Utilities.IoULoss()
+        elif dicebool:
+            self.criterion = Utilities.DiceBCELoss()
+        else:
+            self.criterion = nn.MSELoss()
+            
         self.optimizer = optim.Adam(model.parameters(),
                                     lr=hyperparameters['learning_rate'])
 
