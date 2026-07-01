@@ -215,7 +215,6 @@ class TrainerUNET:
         self.y_valid = y_valid
 
     def run(self):
-        print("Training started...")
         train_accuracy_dict = {}
         valid_accuracy_dict = {}
         train_accuracy_list = []
@@ -227,7 +226,6 @@ class TrainerUNET:
             total_accuracy = 0.0
             n_batch = len(self.x_train)
             for n in range(n_batch):
-                print(f"batch {n + 1}/{n_batch} started")
                 x = self.x_train[n].to(self.device)
                 y = self.y_train[n].to(self.device)
 
@@ -242,7 +240,6 @@ class TrainerUNET:
                 preds = (y_hat > 0.5).float()
                 batch_accuracy = (preds == y).float().mean().item()
                 total_accuracy += batch_accuracy
-                print(f"batch {n + 1}/{n_batch} finished")
 
             train_loss = total_loss / n_batch
             train_accuracy = total_accuracy / n_batch
