@@ -34,19 +34,17 @@ class ScopeUNET:
         self,
         model,
         hyperparameters,
-        msebool=False,
-        ioubool=False,
-        dicebool=False,
+        loss = "bce",
         weight_decay=0.0,
     ):
 
-        if ioubool:
+        if loss == "iou":
             self.criterion = Utilities.IoULoss
-        elif dicebool:
+        elif loss == "dice":
             self.criterion = Utilities.DiceBCELoss
-        elif msebool:
+        elif loss == "mse":
             self.criterion = nn.MSELoss()
-        else:
+        elif loss == "bce":
             self.criterion = nn.BCELoss()
 
         self.optimizer = optim.Adam(
