@@ -18,7 +18,6 @@ class UNET(nn.Module):
         self.filters = hyperparameters["filters"]
         self.kernel_size = hyperparameters["kernel_size"]
         self.embedding_dim = self.hyperparameters["embedding_dim"]
-        self.d_model = self.hyperparameters["d_model"]
         self.activation = self.hyperparameters["activation"]
 
         self.batch_normalization = self.hyperparameters["batch_normalization"]

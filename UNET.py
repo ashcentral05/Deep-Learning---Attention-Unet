@@ -7,7 +7,7 @@ matplotlib.use('Agg')
 import time
 import matplotlib.pyplot as plt
 from ClassesData.DatasetLoader import DatasetLoader
-from ClassesML.UNET import UNET
+from ClassesML.UNET_NoAttention import UNET
 from ClassesML.Scope import ScopeUNET
 from ClassesML.TrainerClassifier import TrainerUNET
 import torch
@@ -15,6 +15,7 @@ import torch.optim as optim
 from torchinfo import summary
 
 print(time.time())
+print(f"CUDA available : {torch.cuda.is_available()}")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 path_parent_project = os.getcwd()
 dataset_image_path = path_parent_project + "\\Dataset\\"+"\\UNET\\"
@@ -32,7 +33,7 @@ hyperparameters = dict(input_dim = 1,
                         dropout_rate = 0.01,
                         learning_rate = 0.0001,
                         early_stopping = True,
-                        max_epochs = 30)
+                        max_epochs = 10)
 
 model = UNET(hyperparameters).to(device)
 print(model)

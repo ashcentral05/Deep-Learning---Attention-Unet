@@ -6,7 +6,6 @@ from Utilities.Utilities import Utilities
 
 
 class UNET(nn.Module):
-
     def __init__(self, hyperparameters):
 
         nn.Module.__init__(self)
@@ -70,11 +69,13 @@ class UNET(nn.Module):
     def create_decoder(self):
 
         self.decoder_layers = nn.ModuleList()
-        self.attention_layers = nn.ModuleList()
-
+        self.depth_count = 0
         for i in range(self.n_conv_layers - 1, -1, -1):
-
-            in_up = self.filters[i] * 2 if i == self.n_conv_layers - 1 else self.filters[i + 1]
+            in_up = (
+                self.filters[i] * 2
+                if i == self.n_conv_layers - 1
+                else self.filters[i + 1]
+            )
             out_up = self.filters[i]
 
             up_layer = UpConv2DBlock(
@@ -83,12 +84,11 @@ class UNET(nn.Module):
                 kernel_size=self.kernel_size,
                 activation=Utilities.get_activation(self.activation),
                 batch_normalization=False,
-                dropout_rate=self.dropout_rate
+                dropout_rate=self.dropout_rate,
             )
             self.decoder_layers.append(up_layer)
 
-            att_layer = AttentionBlock(F_g=out_up, F_l=out_up, F_int=out_up // 2)
-            self.attention_layers.append(att_layer)
+            self.depth_count += 1
 
             in_double_conv = out_up * 2
             out_double_conv = out_up
@@ -106,10 +106,10 @@ class UNET(nn.Module):
         layer = Conv2DBlock(
             in_channels=self.filters[0],
             out_channels=1,
-            activation=Utilities.get_activation('sigmoid'),
+            activation=Utilities.get_activation("sigmoid"),
             kernel_size=1,
             batch_normalization=False,
-            dropout_rate=0.0
+            dropout_rate=0.0,
         )
 
         self.decoder_layers.append(layer)
@@ -130,16 +130,12 @@ class UNET(nn.Module):
         skip_connections = skip_connections[::-1]
 
         decoder_idx = 0
-        for i in range(len(self.attention_layers)):
+        for i in range(self.depth_count):
             up_layer = self.decoder_layers[decoder_idx]
             x = up_layer(x)
 
             skip = skip_connections[i]
-
-            attention_layer = self.attention_layers[i]
-            skip_attributed = attention_layer(g=x, x=skip)
-
-            x = torch.cat([x, skip_attributed], dim=1)
+            x = torch.cat([x, skip], dim=1)
 
             conv_layer = self.decoder_layers[decoder_idx + 1]
             x = conv_layer(x)

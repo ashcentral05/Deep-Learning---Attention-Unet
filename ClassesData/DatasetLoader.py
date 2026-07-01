@@ -17,14 +17,21 @@ class DatasetLoader:
 
         self.root = root
 
-    def load_images_labels_data(self):
+    def load_images_labels_data(self, size=256):
 
         # Load data tensors based on image size
-        train_data_batches = torch.load(os.path.join(self.root, 'train_data_batches.pt'))
-        train_label_batches = torch.load(os.path.join(self.root, 'train_label_batches.pt'))
+        if size != 256:
+            train_data_batches = torch.load(os.path.join(self.root, f'train_data_batches{size}.pt'))
+            train_label_batches = torch.load(os.path.join(self.root, f'train_label_batches{size}.pt'))
 
-        val_data_batches = torch.load(os.path.join(self.root, 'val_data_batches.pt'))
-        val_label_batches = torch.load(os.path.join(self.root, 'val_label_batches.pt'))
+            val_data_batches = torch.load(os.path.join(self.root, f'val_data_batches{size}.pt'))
+            val_label_batches = torch.load(os.path.join(self.root, f'val_label_batches{size}.pt'))
+            
+        else:
+            train_data_batches = torch.load(os.path.join(self.root, 'train_data_batches.pt'))
+            train_label_batches = torch.load(os.path.join(self.root, 'train_label_batches.pt'))
+            val_data_batches = torch.load(os.path.join(self.root, 'val_data_batches128.pt'))
+            val_label_batches = torch.load(os.path.join(self.root, 'val_label_batches128.pt'))
 
         train_data_batches = [batch.float() for batch in train_data_batches]
         val_data_batches = [batch.float() for batch in val_data_batches]
