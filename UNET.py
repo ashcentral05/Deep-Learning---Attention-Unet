@@ -10,6 +10,8 @@ from ClassesData.DatasetLoader import DatasetLoader
 from ClassesML.UNET_NoAttention import UNET
 from ClassesML.Scope import ScopeUNET
 from ClassesML.TrainerClassifier import TrainerUNET
+from ClassesML.Visualization import visualize_predictions
+from Utilities.Utilities import Utilities
 import torch
 import torch.optim as optim
 from torchinfo import summary
