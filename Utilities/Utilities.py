@@ -67,7 +67,21 @@ class Utilities:
         Intersection = (y_hat*y).sum()
         Union = y.sum() + y_hat.sum() - Intersection
         return 1-Intersection/(Union + epsilon)
-     
+        
+    @staticmethod
+    def DiceBCELoss(y_hat, y):
+        bce = nn.BCELoss()
+        bce_loss = bce(y_hat, y)
+
+        intersection = (y_hat * y).sum(dim=(1, 2, 3))
+        dice_loss = 1 - (
+                (2 * intersection + 1e-6) /
+                (y_hat.sum(dim=(1, 2, 3)) + y.sum(dim=(1, 2, 3)) + 1e-6)
+        )
+
+        return bce_loss + dice_loss.mean()
+
+    
     @staticmethod
     def plot_confusion_matrix_fashion(y, y_hat):
 
