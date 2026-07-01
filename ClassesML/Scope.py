@@ -45,9 +45,9 @@ class ScopeUNET:
     def __init__(self, model, hyperparameters,ioubool=False, dicebool=False):
 
         if ioubool:
-            self.criterion = Utilities.IoULoss()
+            self.criterion = Utilities.IoULoss
         elif dicebool:
-            self.criterion = Utilities.DiceBCELoss()
+            self.criterion = Utilities.DiceBCELoss
         else:
             self.criterion = nn.MSELoss()
             
