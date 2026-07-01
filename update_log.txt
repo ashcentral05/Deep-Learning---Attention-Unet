@@ -132,3 +132,72 @@ You can try image size 256*256 if cuda memory allows. (The preprocessed file in 
 Ashvin
 1. Added the IoU Loss method in Utilities.Utilities
 2. You can change the Loss by changing the parameter ioubool to True in ScopeUNET
+#--------------------------------------------------------------------------------------------------------------
+01.07
+Ashvin
+Training the model with the IoU Loss and a Dropout_rate of 0.07 instead of 0.01
+epoch:1/30
+train_loss:0.6348994964420205
+train_accuracy:0.8351544522412933
+epoch:1/30
+valid_loss:0.5677623371086499
+valid_accuracy:0.8586175270599894
+Epoch0 - keeping weights
+epoch:2/30
+train_loss:0.5338762384830135
+train_accuracy:0.8550131163089583
+epoch:2/30
+valid_loss:0.5014121703582235
+valid_accuracy:0.866872514828597
+Epoch1 - best metrics:0.866872514828597 - Keeping weights
+epoch:3/30
+train_loss:0.47793172712963405
+train_accuracy:0.8650881884121658
+epoch:3/30
+valid_loss:0.46437575793502356
+valid_accuracy:0.8714715283696014
+Epoch2 - best metrics:0.8714715283696014 - Keeping weights
+epoch:4/30
+train_loss:0.4427469375700054
+train_accuracy:0.8724476711289717
+epoch:4/30
+valid_loss:0.45049184619790256
+valid_accuracy:0.8749954369988772
+Epoch3 - best metrics:0.8749954369988772 - Keeping weights
+epoch:5/30
+train_loss:0.41874240294541465
+train_accuracy:0.8780433066410593
+epoch:5/30
+valid_loss:0.4368274955466242
+valid_accuracy:0.8764804253483763
+Epoch4 - best metrics:0.8764804253483763 - Keeping weights
+epoch:6/30
+train_loss:0.4015366433575602
+train_accuracy:0.8828601214555231
+epoch:6/30
+valid_loss:0.43100048763917226
+valid_accuracy:0.8784127890473545
+Epoch5 - best metrics:0.8784127890473545 - Keeping weights
+epoch:7/30
+train_loss:0.39245013346766483
+train_accuracy:0.8848283043002138
+epoch:7/30
+valid_loss:0.4219241744220847
+valid_accuracy:0.8778711173794057
+Epoch6 - Metrics did not improve, wait1
+epoch:8/30
+train_loss:0.3817658093896243
+train_accuracy:0.8884273584526364
+epoch:8/30
+valid_loss:0.4072412051776848
+valid_accuracy:0.8824962666719267
+Epoch7 - best metrics:0.8824962666719267 - Keeping weights
+epoch:9/30
+train_loss:0.37607925820468674
+train_accuracy:0.8902547890597051
+epoch:9/30
+valid_loss:0.42482847624486036
+valid_accuracy:0.8788528212226263
+Epoch8 - Metrics did not improve, wait1
+Similar results as IoU is a geometric loss meaning it is better at fine tuning finding more refined details
+but the model can't do this yet. There's overfitting as well. Maybe try to increase the dropout_rate even more.
