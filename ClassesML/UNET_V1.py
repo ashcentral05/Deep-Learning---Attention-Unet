@@ -137,7 +137,7 @@ class UNET(nn.Module):
             skip = skip_connections[i]
 
             attention_layer = self.attention_layers[i]
-            skip_attributed = attention_layer(g=x, x=skip)
+            skip_attributed = attention_layer(g=x, x=skip,dropout_rate=self.dropout_rate)
 
             x = torch.cat([x, skip_attributed], dim=1)
 
