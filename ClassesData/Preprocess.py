@@ -3,7 +3,7 @@ import os
 import cv2
 import numpy as np
 import torch
-
+from torchvision.transforms import v2
 from PairCheck import collect_pairs
 
 IMAGE_SIZE = (256, 256)
@@ -16,7 +16,14 @@ DATASET_ROOT = os.path.join(_PROJECT_ROOT, "Dataset", "UNET")
 OUTPUT_DIR = DATASET_ROOT
 
 
-def preprocess_sample(image_path, label_path):
+transforms_pipeline = [
+    v2.RandomRotation(degrees=(-180,180),interpolation=v2.InterpolationMode.BILINEAR),
+    v2.RandomHorizontalFlip(p=0.5),
+    v2.RandomVerticalFlip(p=0.5),
+]
+
+
+def preprocess_sample(image_path, label_path,augment=False):
 
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     label = cv2.imread(label_path, cv2.IMREAD_GRAYSCALE)
@@ -29,7 +36,21 @@ def preprocess_sample(image_path, label_path):
     mask = (label > 127).astype(np.float32)
     mask = mask[np.newaxis, :, :]
 
-    return torch.from_numpy(image), torch.from_numpy(mask)
+    image_tensor = torch.from_numpy(image).unsqueeze(0)
+    mask_tensor = torch.from_numpy(mask).unsqueeze(0)
+
+    n = len(transforms_pipeline)
+    if augment:
+        image_tensors = [image_tensor]
+        mask_tensors = [mask_tensor]
+        for transfo in transforms_pipeline:
+            image_tensors.append(transfo(image_tensors[-1]))
+            mask_tensors.append(transfo(mask_tensors[-1]))
+        return image_tensors,mask_tensors
+    return [image_tensor],[mask_tensor]
+
+    
+
 
 
 def build_tensors(split):
@@ -41,8 +62,17 @@ def build_tensors(split):
 
     for image_path, label_path in pairs:
         image_tensor, mask_tensor = preprocess_sample(image_path, label_path)
-        images.append(image_tensor)
-        masks.append(mask_tensor)
+        
+        #Data augmentation
+        Augmented_img,Augmented_mask = preprocess_sample(image_path, label_path,augment=True)
+
+        images.append(image_tensor[0])
+
+        masks.append(mask_tensor[0])
+
+        for i in range(len(Augmented_img)):
+            images.append(Augmented_img[i])
+            masks.append(Augmented_mask[i])
 
     return torch.stack(images, dim=0), torch.stack(masks, dim=0)
 
