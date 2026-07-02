@@ -60,19 +60,23 @@ def build_tensors(split):
     images = []
     masks = []
 
-    for image_path, label_path in pairs:
+    for idx,(image_path, label_path) in enumerate(pairs):
         image_tensor, mask_tensor = preprocess_sample(image_path, label_path)
         
-        #Data augmentation
-        Augmented_img,Augmented_mask = preprocess_sample(image_path, label_path,augment=True)
+        
+
+      
 
         images.append(image_tensor[0])
-
         masks.append(mask_tensor[0])
 
-        for i in range(len(Augmented_img)):
-            images.append(Augmented_img[i])
-            masks.append(Augmented_mask[i])
+        if idx%4==0:#Data augmentation is made on 25% of the data in average.
+            Augmented_img,Augmented_mask = preprocess_sample(image_path, label_path,augment=True)
+            
+
+            for i in range(len(Augmented_img)):
+                images.append(Augmented_img[i])
+                masks.append(Augmented_mask[i])
 
     return torch.stack(images, dim=0), torch.stack(masks, dim=0)
 
