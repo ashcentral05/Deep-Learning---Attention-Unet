@@ -22,6 +22,7 @@ print(f"CUDA available : {torch.cuda.is_available()}")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 path_parent_project = os.getcwd()
 dataset_image_path = os.path.join(path_parent_project, "Dataset", "UNET")
+models_path = os.path.join(path_parent_project, "Models")
 download_dataset(path=dataset_image_path, size=128)
 dataset = DatasetLoader(root=dataset_image_path)
 train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_data(size=128)
@@ -58,6 +59,7 @@ trainer.set_scope(scope=scope)
 trainer.set_data(x_train=x_train,y_train=y_train,
                  x_valid=x_val,y_valid=y_val,)
 train_accuracy_list, valid_accuracy_list, train_loss_list, valid_loss_list = trainer.run()
+trainer.save_model_weights(path=models_path)
 
 #visualization
 visualize_predictions(model, x_val[0], y_val[0], device, n_samples=4)
