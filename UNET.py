@@ -11,6 +11,7 @@ from ClassesML.UNET_NoAttention import UNET
 from ClassesML.Scope import ScopeUNET
 from ClassesML.TrainerClassifier import TrainerUNET
 from ClassesML.Visualization import visualize_predictions
+from ClassesData.Download import download_dataset
 from Utilities.Utilities import Utilities
 import torch
 import torch.optim as optim
@@ -20,7 +21,8 @@ print(time.time())
 print(f"CUDA available : {torch.cuda.is_available()}")
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 path_parent_project = os.getcwd()
-dataset_image_path = path_parent_project + "\\Dataset\\"+"\\UNET\\"
+dataset_image_path = os.path.join(path_parent_project, "Dataset", "UNET")
+download_dataset(path=dataset_image_path, size=128)
 dataset = DatasetLoader(root=dataset_image_path)
 train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_data(size=128)
 

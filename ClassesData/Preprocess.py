@@ -1,5 +1,4 @@
 import os
-
 import cv2
 import numpy as np
 import torch
@@ -17,13 +16,13 @@ OUTPUT_DIR = DATASET_ROOT
 
 
 transforms_pipeline = [
-    v2.RandomRotation(degrees=(-180,180),interpolation=v2.InterpolationMode.BILINEAR),
+    v2.RandomRotation(degrees=(-180, 180), interpolation=v2.InterpolationMode.BILINEAR),
     v2.RandomHorizontalFlip(p=0.5),
     v2.RandomVerticalFlip(p=0.5),
 ]
 
 
-def preprocess_sample(image_path, label_path,augment=False):
+def preprocess_sample(image_path, label_path, augment=False):
 
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     label = cv2.imread(label_path, cv2.IMREAD_GRAYSCALE)
@@ -46,11 +45,8 @@ def preprocess_sample(image_path, label_path,augment=False):
         for transfo in transforms_pipeline:
             image_tensors.append(transfo(image_tensors[-1]))
             mask_tensors.append(transfo(mask_tensors[-1]))
-        return image_tensors,mask_tensors
-    return [image_tensor],[mask_tensor]
-
-    
-
+        return image_tensors, mask_tensors
+    return [image_tensor], [mask_tensor]
 
 
 def build_tensors(split):
@@ -60,19 +56,16 @@ def build_tensors(split):
     images = []
     masks = []
 
-    for idx,(image_path, label_path) in enumerate(pairs):
+    for idx, (image_path, label_path) in enumerate(pairs):
         image_tensor, mask_tensor = preprocess_sample(image_path, label_path)
-        
-        
-
-      
 
         images.append(image_tensor[0])
         masks.append(mask_tensor[0])
 
-        if idx%4==0:#Data augmentation is made on 25% of the data in average.
-            Augmented_img,Augmented_mask = preprocess_sample(image_path, label_path,augment=True)
-            
+        if idx % 4 == 0:  # Data augmentation is made on 25% of the data in average.
+            Augmented_img, Augmented_mask = preprocess_sample(
+                image_path, label_path, augment=True
+            )
 
             for i in range(len(Augmented_img)):
                 images.append(Augmented_img[i])
@@ -82,7 +75,7 @@ def build_tensors(split):
 
 
 def make_batches(tensor, batch_size):
-    return [tensor[i:i + batch_size] for i in range(0, tensor.shape[0], batch_size)]
+    return [tensor[i : i + batch_size] for i in range(0, tensor.shape[0], batch_size)]
 
 
 def main():
