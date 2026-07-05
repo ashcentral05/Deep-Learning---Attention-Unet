@@ -1,4 +1,5 @@
 import torch
+import os
 from Utilities.Utilities import Utilities
 
 
@@ -18,6 +19,16 @@ class TrainerUNET:
         self.y_train = y_train
         self.x_valid = x_valid
         self.y_valid = y_valid
+
+    def save_model_weights(self, path):
+
+            os.makedirs(path, exist_ok=True)
+            filename = "best_model_weights.pt"
+            full_path = os.path.join(path, filename)
+            
+            state_dict_cpu = {k: v.cpu() for k, v in self.model.state_dict().items()}
+            torch.save(state_dict_cpu, full_path)
+            
 
     def run(self):
         train_accuracy_dict = {}

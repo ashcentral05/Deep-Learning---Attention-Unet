@@ -1,5 +1,4 @@
 import os
-
 import cv2
 import numpy as np
 import torch
@@ -23,7 +22,7 @@ transforms_pipeline = [
 ]
 
 
-def preprocess_sample(image_path, label_path,augment=False):
+def preprocess_sample(image_path, label_path, augment=False):
 
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     label = cv2.imread(label_path, cv2.IMREAD_GRAYSCALE)
@@ -62,12 +61,8 @@ def build_tensors(split,is_train):
     images = []
     masks = []
 
-    for idx,(image_path, label_path) in enumerate(pairs):
+    for idx, (image_path, label_path) in enumerate(pairs):
         image_tensor, mask_tensor = preprocess_sample(image_path, label_path)
-        
-        
-
-      
 
         images.append(image_tensor[0])
         masks.append(mask_tensor[0])
@@ -84,7 +79,7 @@ def build_tensors(split,is_train):
 
 
 def make_batches(tensor, batch_size):
-    return [tensor[i:i + batch_size] for i in range(0, tensor.shape[0], batch_size)]
+    return [tensor[i : i + batch_size] for i in range(0, tensor.shape[0], batch_size)]
 
 
 def main():
