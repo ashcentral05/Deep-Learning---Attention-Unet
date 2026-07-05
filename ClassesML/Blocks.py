@@ -241,24 +241,24 @@ class UpConv2DBlock(nn.Module):
 
 
 class AttentionBlock(nn.Module):
-    def __init__(self, F_g, F_l, F_int, activation=nn.ReLU, dropout_rate=0.1):
+    def __init__(self, gate_channels, encoder_channels, intermediate_channels, activation=nn.ReLU, dropout_rate=0.1):
 
         super(AttentionBlock, self).__init__()
 
-        self.W_g = nn.Sequential(
-            nn.Conv2d(F_g, F_int, kernel_size=1,
+        self.project_gate = nn.Sequential(
+            nn.Conv2d(gate_channels, intermediate_channels, kernel_size=1,
                       stride=1, padding=0, bias=True),
-            nn.BatchNorm2d(F_int),
+            nn.BatchNorm2d(intermediate_channels),
+        ) 
+
+        self.project_encoder = nn.Sequential(
+            nn.Conv2d(encoder_channels, intermediate_channels, kernel_size=1,
+                      stride=1, padding=0, bias=True),
+            nn.BatchNorm2d(intermediate_channels),
         )
 
-        self.W_x = nn.Sequential(
-            nn.Conv2d(F_l, F_int, kernel_size=1,
-                      stride=1, padding=0, bias=True),
-            nn.BatchNorm2d(F_int),
-        )
-
-        self.psi = nn.Sequential(
-            nn.Conv2d(F_int, 1, kernel_size=1, stride=1, padding=0, bias=True),
+        self.compute_attention_weights = nn.Sequential(
+            nn.Conv2d(intermediate_channels, 1, kernel_size=1, stride=1, padding=0, bias=True),
             nn.BatchNorm2d(1),
             nn.Sigmoid(),
         )
@@ -267,13 +267,13 @@ class AttentionBlock(nn.Module):
 
     def forward(self, g, x):
 
-        g1 = self.W_g(g)
+        g1 = self.project_gate(g)
 
-        x1 = self.W_x(x)
+        x1 = self.project_encoder(x)
 
         psi = self.relu(g1 + x1)
 
-        psi = self.psi(psi)
+        psi = self.compute_attention_weights(psi)
 
         return x * psi
 
