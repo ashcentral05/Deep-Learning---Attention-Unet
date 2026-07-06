@@ -1,0 +1,17 @@
+name: oil_spill_env
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.9
+  - pytorch
+  - torchvision
+  - opencv
+  - numpy
+  - matplotlib
+  - gdown
+  - pip
+  - pip:
+    - transformers
+    - datasets
