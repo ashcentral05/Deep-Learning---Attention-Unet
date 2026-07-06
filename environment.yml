@@ -12,6 +12,10 @@ dependencies:
   - matplotlib
   - gdown
   - pip
+  - kagglehub
+  - torchinfo
+  - scikit-learn
+  - seaborn
   - pip:
     - transformers
     - datasets

@@ -47,8 +47,8 @@ def preprocess_sample(image_path, label_path, augment=False):
             mask_transfo = (mask_transfo > 0.5).to(torch.float32) #due to the interpolation, we need the apply a threshold on the transformed mask
             image_tensors.append(img_transfo)
             mask_tensors.append(mask_transfo)
-        return image_tensors,mask_tensors
-    return [image_tensor],[mask_tensor]
+        return image_tensors, mask_tensors
+    return [image_tensor], [mask_tensor]
 
     
 
@@ -83,7 +83,6 @@ def make_batches(tensor, batch_size):
 
 
 def main():
-
     train_images, train_masks = build_tensors("train",is_train=True)
     val_images, val_masks = build_tensors("test",is_train=False)
 
