@@ -35,8 +35,8 @@ def preprocess_sample(image_path, label_path, augment=False):
     mask = (label > 127).astype(np.float32)
     mask = mask[np.newaxis, :, :]
 
-    image_tensor = torch.from_numpy(image).unsqueeze(0)
-    mask_tensor = torch.from_numpy(mask).unsqueeze(0)
+    image_tensor = torch.from_numpy(image)
+    mask_tensor = torch.from_numpy(mask)
 
     n = len(transforms_pipeline)
     if augment:
