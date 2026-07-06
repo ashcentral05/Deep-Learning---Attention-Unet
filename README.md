@@ -18,7 +18,6 @@ This repository contains a PyTorch-based deep learning pipeline designed to dete
 │   ├── TrainerClassifier.py   # Main training, validation, and optimization loop
 │   ├── UNET_NoAttention.py    # Standard baseline U-Net implementation
 │   ├── UNET_V1.py             # Optimized or custom version of the model
-│   ├── UNET.py                # Core Attention U-Net architecture
 │   └── Visualization.py       # Metrics plotters and segmentation mask outputs
 │
 ├── Dataset/UNET/              # Serialized tensor binaries (loaded directly into RAM)
@@ -45,17 +44,18 @@ This repository contains a PyTorch-based deep learning pipeline designed to dete
 This project uses Conda to manage package dependencies and ensure reproducibility. To recreate the exact environment, run the following commands in your terminal:
 
 <pre><code># Create the environment from the configuration file
-conda env create -f environment.yml
+conda env create -f environment.yml </code></pre>
 
 # Activate the environment
+<pre><code>
 conda activate oil_spill_env</code></pre>
 
-## 2. Preprocessing & Data Serialisation
-Before training, raw satellite pairs must be normalized, resized, and saved as serialized binaries (.pt files) to eliminate disk I/O bottlenecks during runtime:
+## 2. Data Downloading, Preprocessing & Serialisation
+Before training, the dataset must be downloaded from Kaggle and raw satellite pairs must be normalized, resized, and saved as serialized binaries (.pt files). To do all of this at the same time, run the file `Data.py`.
 
-<pre><code>python ClassesData/Preprocess.py</code></pre>
+<pre><code>python Data.py</code></pre>
 
-*Note: This script resizes images using bilinear interpolation and masks via nearest-neighbor interpolation to preserve strictly binary labels.*
+*Note: The script resizes images using bilinear interpolation and masks via nearest-neighbor interpolation to preserve strictly binary labels.*
 
 ## 3. Running the Training Loop
 To train the main Attention U-Net model using the default configurations, execute the top-level script:

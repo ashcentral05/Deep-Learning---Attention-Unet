@@ -43,11 +43,8 @@ if downloaded_path and os.path.exists(downloaded_path):
         source_item = os.path.join(downloaded_path, item)
         target_item = os.path.join(path, item)
         
-        # Déplace le fichier ou sous-dossier (images, labels, etc.) vers Dataset/Unet
         shutil.move(source_item, target_item)
     
-    # Nettoyage : On supprime le dossier imbriqué 'bitsandlayers' désormais vide
-    # On remonte jusqu'à trouver le premier sous-dossier créé par kagglehub dans path
     dossier_auteur = os.path.join(path, "dataset")
     if os.path.exists(dossier_auteur):
         shutil.rmtree(dossier_auteur)
