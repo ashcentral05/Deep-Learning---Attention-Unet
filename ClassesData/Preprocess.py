@@ -16,9 +16,9 @@ OUTPUT_DIR = DATASET_ROOT
 
 
 transforms_pipeline = [
-    v2.RandomRotation(degrees=(-180, 180), interpolation=v2.InterpolationMode.BILINEAR),
-    v2.RandomHorizontalFlip(p=0.5),
-    v2.RandomVerticalFlip(p=0.5),
+    v2.RandomRotation(degrees=(-180,180),interpolation=v2.InterpolationMode.BILINEAR),
+    v2.RandomHorizontalFlip(p=1.0),
+    v2.RandomVerticalFlip(p=1.0),
 ]
 
 
@@ -40,16 +40,21 @@ def preprocess_sample(image_path, label_path, augment=False):
 
     n = len(transforms_pipeline)
     if augment:
-        image_tensors = [image_tensor]
-        mask_tensors = [mask_tensor]
+        image_tensors = []
+        mask_tensors = []
         for transfo in transforms_pipeline:
-            image_tensors.append(transfo(image_tensors[-1]))
-            mask_tensors.append(transfo(mask_tensors[-1]))
-        return image_tensors, mask_tensors
-    return [image_tensor], [mask_tensor]
+            img_transfo,mask_transfo = transfo(image_tensor,mask_tensor) #we apply the same transformation on both the mask and the image
+            mask_transfo = (mask_transfo > 0.5).to(torch.float32) #due to the interpolation, we need the apply a threshold on the transformed mask
+            image_tensors.append(img_transfo)
+            mask_tensors.append(mask_transfo)
+        return image_tensors,mask_tensors
+    return [image_tensor],[mask_tensor]
+
+    
 
 
-def build_tensors(split):
+
+def build_tensors(split,is_train):
 
     pairs = collect_pairs(DATASET_ROOT, split, SENSORS)
 
@@ -62,10 +67,9 @@ def build_tensors(split):
         images.append(image_tensor[0])
         masks.append(mask_tensor[0])
 
-        if idx % 4 == 0:  # Data augmentation is made on 25% of the data in average.
-            Augmented_img, Augmented_mask = preprocess_sample(
-                image_path, label_path, augment=True
-            )
+        if is_train and idx%4==0:#Data augmentation is made on 25% of the data in average.
+            Augmented_img,Augmented_mask = preprocess_sample(image_path, label_path,augment=True)
+            
 
             for i in range(len(Augmented_img)):
                 images.append(Augmented_img[i])
@@ -80,8 +84,8 @@ def make_batches(tensor, batch_size):
 
 def main():
 
-    train_images, train_masks = build_tensors("train")
-    val_images, val_masks = build_tensors("test")
+    train_images, train_masks = build_tensors("train",is_train=True)
+    val_images, val_masks = build_tensors("test",is_train=False)
 
     train_data_batches = make_batches(train_images, BATCH_SIZE)
     train_label_batches = make_batches(train_masks, BATCH_SIZE)
