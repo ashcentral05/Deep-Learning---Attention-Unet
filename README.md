@@ -6,35 +6,54 @@ This repository contains a PyTorch-based deep learning pipeline designed to dete
 
 ## Repository Structure
 
-<pre><code>├── ClassesData/
-│   ├── DatasetLoader.py       # Parametric multi-scale tensor loader & data pipelines
-│   ├── Download.py            # Utility script for dataset downloading
-│   ├── PairCheck.py           # Integrity script checking image-mask consistency
-│   └── Preprocess.py          # Serialisation, resizing (256x256), and normalization pipeline
+<pre><code>Deep-Learning---Attention-Unet-mai
+│  Data.py
+│  environment.yml
+│  evaluate.py
+│  students_information.txt
+│  train.py
 │
-├── ClassesML/
-│   ├── EarlyStopper.py        # Early stopping logic to prevent overfitting
-│   ├── Scope.py               # Performance and evaluation scoping functions
-│   ├── TrainerClassifier.py   # Main training, validation, and optimization loop
-│   ├── UNET_NoAttention.py    # Standard baseline U-Net implementation
-│   ├── UNET_V1.py             # Optimized or custom version of the model
-│   └── Visualization.py       # Metrics plotters and segmentation mask outputs
+├─ClassesData
+│  │  DatasetLoader.py
+│  │  Download.py
+│  │  PairCheck.py
+│  │  Preprocess.py
+│  │
+│  └─__pycache__
+│          DatasetLoader.cpython-312.pyc
+│          Download.cpython-312.pyc
+│          PairCheck.cpython-312.pyc
+│          Preprocess.cpython-312.pyc
 │
-├── Dataset/UNET/              # Serialized tensor binaries (loaded directly into RAM)
-│   ├── train_data_batches.pt / train_data_batches128.pt
-│   ├── train_label_batches.pt / train_label_batches128.pt
-│   ├── val_data_batches.pt / val_data_batches128.pt
-│   └── val_label_batches.pt / val_label_batches128.pt
+├─ClassesML
+│  │  Blocks.py
+│  │  EarlyStopper.py
+│  │  Scope.py
+│  │  TrainerUNET.py
+│  │  UNET.py
+│  │  UNET_NoAttention.py
+│  └─ __init__.py
 │
-├── Models/                    # Directory reserved for saved model weights (.pth)
-├── Utilities/                 # Helper scripts and miscellaneous tools
+├─Dataset
+│  └─UNET
+│          train_data_batches.pt
+│          train_label_batches.pt
+│          val_data_batches.pt
+│          val_label_batches.pt
 │
-├── environment.yml            # Conda environment configuration file
-├── .gitignore                 # Specifies intentionally untracked files to ignore
-├── README.md                  # Project documentation (this file)
-├── UNET.py                    # Main executable script to launch experiments
-├── students_information.txt   # Team credentials and project info
-└── *_log.txt                  # Error and runtime execution logs</code></pre>
+├─Model
+│  └─20260707_143753
+│          unet.pth
+│
+├─Result
+│  └─YYMMDD_HHMMSS
+│          loss.png
+│          note.txt
+│          visualize.png
+│  
+└─Utilities
+    │  Utilities.py
+    └─  __init__.py
 
 ---
 
@@ -58,6 +77,11 @@ To execute the entire data pipeline at once, run the `Data.py` script:
 <pre><code>
 python Data.py </code></pre>
 
+
+Note: The pipeline resizes SAR images using bilinear interpolation and masks via nearest-neighbor interpolation. For augmented right-angle rotations, masks are explicitly re-thresholded to ensure boundaries stay strictly binary.   
+There's a training set of 6455 images and a validation set of 1615 images. 5% of the training samples are augmented with random rotations, horisontal flip, and vertical flip，as a result, the final training set contains approximately 115% of the original data.  
+This process may take **3-4 minutes**.  
+
 ### Advanced Options & Arguments
 If the original dataset is too heavy for your local machine's RAM or GPU memory, or if you want to configure data augmentation, you can pass the following optional arguments through the terminal:
 
@@ -69,19 +93,19 @@ python Data.py --size 128
 python Data.py --augment
 python Data.py --size 128 --augment
 
-Note: The pipeline resizes SAR images using bilinear interpolation and masks via nearest-neighbor interpolation. For augmented right-angle rotations, masks are explicitly re-thresholded to ensure boundaries stay strictly binary.</code></pre>
-
 ## 3. Running the Training Loop
 To train the main Attention U-Net model using the default configurations, execute the top-level script:
 
-<pre><code>python train.py</code></pre>
-
+<pre><code>python train.py</code></pre>  
+The trained model will be saved in Model/timestamp. The image of loss curves and validation curves will be saved in Result/timestamp.
 ---
 
 ## 4. Evaluation
 To evaluate the trained models, execute the top-level script:
 
-<pre><code>python evaluate.py</code></pre>
+<pre><code>python evaluate.py YYMMDD_HHMMSS</code></pre>
+**Please type the timestamp folder's name of the trained model you want to evaluate.**  
+It will visualize the predictions, and save the image of visualization to Result/timestamp.
 ---
 
 ###  Key Architectural Features
