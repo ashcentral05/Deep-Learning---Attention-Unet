@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import shutil
 from torchvision.transforms import v2
-from PairCheck import collect_pairs
+from ClassesData.PairCheck import collect_pairs
 import torchvision.transforms.v2.functional as F
 
 IMAGE_SIZE = (256, 256)
