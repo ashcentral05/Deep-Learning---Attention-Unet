@@ -5,6 +5,7 @@ import torch
 import shutil
 from torchvision.transforms import v2
 from PairCheck import collect_pairs
+import torchvision.transforms.v2.functional as F
 
 IMAGE_SIZE = (256, 256)
 SENSORS = ["palsar", "sentinel"]
@@ -17,12 +18,12 @@ OUTPUT_DIR = DATASET_ROOT
 
 
 transforms_pipeline = [
-    v2.RandomChoice([v2.RandomRotation(degrees=(180, 180), interpolation=v2.InterpolationMode.BILINEAR),
-                     v2.RandomRotation(degrees=(90, 90), interpolation=v2.InterpolationMode.BILINEAR),
-                     v2.RandomRotation(degrees=(-180, -180), interpolation=v2.InterpolationMode.BILINEAR),
-                     v2.RandomRotation(degrees=(-90, -90), interpolation=v2.InterpolationMode.BILINEAR)]
-                     )
-    ,
+    v2.RandomChoice([
+        lambda img, msk: (F.rotate(img, 90), F.rotate(msk, 90)),
+        lambda img, msk: (F.rotate(img, 180), F.rotate(msk, 180)),
+        lambda img, msk: (F.rotate(img, 270), F.rotate(msk, 270))
+    ]),
+    
     v2.RandomHorizontalFlip(p=1.0),
     v2.RandomVerticalFlip(p=1.0),
 ]
