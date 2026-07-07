@@ -7,7 +7,8 @@ matplotlib.use('Agg')
 import time
 import matplotlib.pyplot as plt
 from ClassesData.DatasetLoader import DatasetLoader
-from ClassesML.UNET_NoAttention import UNET
+from ClassesML.UNET_NoAttention import UNET_NoAttention
+
 from ClassesML.Scope import ScopeUNET
 from ClassesML.TrainerUNET import TrainerUNET
 #from ClassesML.Visualization import visualize_predictions

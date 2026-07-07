@@ -5,7 +5,7 @@ from ClassesML.Blocks import *
 from Utilities.Utilities import Utilities
 
 
-class UNET(nn.Module):
+class UNET_NoAttention(nn.Module):
     def __init__(self, hyperparameters):
 
         nn.Module.__init__(self)

@@ -3,6 +3,7 @@ import matplotlib
 matplotlib.use('Agg')
 import torch
 from ClassesData.DatasetLoader import DatasetLoader
+from ClassesML.UNET_NoAttention import UNET_NoAttention
 from ClassesML.UNET import UNET
 from Utilities.Utilities import Utilities
 
