@@ -60,8 +60,14 @@ Before training, the dataset must be downloaded from Kaggle and raw satellite pa
 ## 3. Running the Training Loop
 To train the main Attention U-Net model using the default configurations, execute the top-level script:
 
-<pre><code>python UNET.py</code></pre>
+<pre><code>python train.py</code></pre>
 
+---
+
+## 4. Evaluation
+To evaluate the trained models, execute the top-level script:
+
+<pre><code>python evaluate.py</code></pre>
 ---
 
 ###  Key Architectural Features
