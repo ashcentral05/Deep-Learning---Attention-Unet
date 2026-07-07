@@ -6,7 +6,6 @@ from Utilities.Utilities import Utilities
 
 
 class UNET(nn.Module):
-
     def __init__(self, hyperparameters):
 
         nn.Module.__init__(self)
@@ -74,8 +73,11 @@ class UNET(nn.Module):
         self.attention_layers = nn.ModuleList()
 
         for i in range(self.n_conv_layers - 1, -1, -1):
-
-            in_up = self.filters[i] * 2 if i == self.n_conv_layers - 1 else self.filters[i + 1]
+            in_up = (
+                self.filters[i] * 2
+                if i == self.n_conv_layers - 1
+                else self.filters[i + 1]
+            )
             out_up = self.filters[i]
 
             up_layer = UpConv2DBlock(
@@ -84,11 +86,15 @@ class UNET(nn.Module):
                 kernel_size=self.kernel_size,
                 activation=Utilities.get_activation(self.activation),
                 batch_normalization=False,
-                dropout_rate=self.dropout_rate
+                dropout_rate=self.dropout_rate,
             )
             self.decoder_layers.append(up_layer)
 
-            att_layer = AttentionBlock(F_g=out_up, F_l=out_up, F_int=out_up // 2)
+            att_layer = AttentionBlock(
+                gate_channels=out_up,
+                encoder_channels=out_up,
+                intermediate_channels=out_up // 2,
+            )
             self.attention_layers.append(att_layer)
 
             in_double_conv = out_up * 2
@@ -107,10 +113,10 @@ class UNET(nn.Module):
         layer = Conv2DBlock(
             in_channels=self.filters[0],
             out_channels=1,
-            activation=Utilities.get_activation('sigmoid'),
+            activation=Utilities.get_activation("sigmoid"),
             kernel_size=1,
             batch_normalization=False,
-            dropout_rate=0.0
+            dropout_rate=0.0,
         )
 
         self.decoder_layers.append(layer)
