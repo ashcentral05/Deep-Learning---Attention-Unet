@@ -1,8 +1,9 @@
 import os
 import numpy as np
+import time
 
 import matplotlib
-matplotlib.use("Agg")
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 
 from sklearn.metrics import confusion_matrix
@@ -29,20 +30,6 @@ class Utilities:
             raise ValueError(f"Unknown activation function: {activation_str}")
 
     @staticmethod
-    def images_as_canvas(images, title: str = ""):
-
-        canvas = make_grid(images.cpu(), padding=10, nrow=10, normalize=True)
-        canvas = canvas.permute(1, 2, 0).numpy() * 255
-        canvas = canvas.astype("uint8")
-
-        fig = plt.figure()
-        ax = fig.add_subplot(1, 1, 1)
-        ax.imshow(canvas)
-        ax.axis("off")
-        ax.set_title(title)
-        plt.show()
-
-    @staticmethod
     def compute_accuracy(y_hat, y):
 
         if not isinstance(y_hat, torch.Tensor):
@@ -57,18 +44,6 @@ class Utilities:
         return accuracy
 
     @staticmethod
-    def IoULoss(y_hat,y):
-        
-        
-        y_hat_flat = y_hat.view(-1)
-        y_flat = y.view(-1)
-        
-        epsilon = 1e-6
-        Intersection = (y_hat*y).sum()
-        Union = y.sum() + y_hat.sum() - Intersection
-        return 1-Intersection/(Union + epsilon)
-        
-    @staticmethod
     def DiceBCELoss(y_hat, y):
         bce = nn.BCELoss()
         bce_loss = bce(y_hat, y)
@@ -81,85 +56,17 @@ class Utilities:
 
         return bce_loss + dice_loss.mean()
 
-    
     @staticmethod
-    def plot_confusion_matrix_fashion(y, y_hat):
+    def plot_curves(train_loss_list, valid_loss_list, train_accuracy_list, valid_accuracy_list, result_dir):
+        os.makedirs(result_dir, exist_ok=True)
 
-        accuracy = Utilities.compute_accuracy(y_hat, y)
-
-        y_hat = np.argmax(y_hat, 1)
-
-        cm = confusion_matrix(y, y_hat)
-        cm_normalized = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
-
-        label_map = {0: 'T-shirt/top', 1: 'Trouser', 2: 'Pullover',
-                     3: 'Dress', 4: 'Coat', 5: 'Sandal',
-                     6: 'Shirt', 7: 'Sneaker', 8: 'Bag', 9: 'Ankle boot'}
-
-        plt.figure()
-        plt.subplot(1, 1, 1)
-        sns.heatmap(cm_normalized, annot=True, fmt=".2f", cmap="Blues",
-                    xticklabels=[label_map[i] for i in range(10)],
-                    yticklabels=[label_map[i] for i in range(10)])
-        plt.xlabel("Predicted label")
-        plt.ylabel("True label")
-        plt.title("Confusion matrix - Accuracy: " + str(accuracy))
-        plt.tight_layout()
-        plt.show()
-
-    @staticmethod
-    def plot_latent_space(z_fit, y_fit):
-
-        label_map = {0: 'T-shirt/top', 1: 'Trouser', 2: 'Pullover',
-                     3: 'Dress', 4: 'Coat', 5: 'Sandal',
-                     6: 'Shirt', 7: 'Sneaker', 8: 'Bag', 9: 'Ankle boot'}
-
-        fig = plt.figure(figsize=(16, 10))
-        ax = fig.add_subplot(1, 1, 1)
-
-        cmap = plt.get_cmap('gist_rainbow')
-        colors = cmap(np.linspace(0, 1, 10))
-        colors = dict(zip(label_map.keys(), colors))
-
-        for y in label_map.keys():
-            index = np.where(y_fit == y)
-            ax.scatter(z_fit[index, 0], z_fit[index, 1], color=colors[y],
-                       marker='o', s=30, alpha=0.5,
-                       label=label_map[y])
-
-        ax.legend()
-        plt.show()
-
-    @staticmethod
-    def images_2_as_canvas(images1, images2, title: str = ""):
-
-        canvas1 = make_grid(images1.cpu(), padding=10, nrow=10, normalize=True)
-        canvas1 = canvas1.permute(1, 2, 0).numpy() * 255
-        canvas1 = canvas1.astype("uint8")
-
-        canvas2 = make_grid(images2.cpu(), padding=10, nrow=10, normalize=True)
-        canvas2 = canvas2.permute(1, 2, 0).numpy() * 255
-        canvas2 = canvas2.astype("uint8")
-
-
-        canvas = np.concatenate((canvas1, canvas2), axis=1)
-
-        fig = plt.figure()
-        ax = fig.add_subplot(1, 1, 1)
-        ax.imshow(canvas)
-        ax.axis("off")
-        ax.set_title(title)
-
-        plt.show()
-
-    @staticmethod
-    def plot_curves(train_loss_list, valid_loss_list, train_accuracy_list, valid_accuracy_list):
         plt.figure()
         plt.plot(train_loss_list, label='train')
         plt.plot(valid_loss_list, label='val')
         plt.xlabel('epoch')
         plt.ylabel('loss')
         plt.legend()
+        plt.savefig(os.path.join(result_dir, 'loss.png'))
         plt.show()
 
         plt.figure()
@@ -168,4 +75,44 @@ class Utilities:
         plt.xlabel('epoch')
         plt.ylabel('accuracy')
         plt.legend()
+        plt.savefig(os.path.join(result_dir, 'accuracy.png'))
         plt.show()
+
+    @staticmethod
+    def visualize_predictions(model, x, y, device, n_samples=4, save_dir='.'):
+        model.eval()
+        with torch.no_grad():
+            x_sample = x[:n_samples].to(device)
+            y_sample = y[:n_samples].to(device)
+            y_hat = model(x_sample)
+            preds = (y_hat > 0.5).float()
+        x_sample = x_sample.cpu()
+        y_sample = y_sample.cpu()
+        preds = preds.cpu()
+        fig, axes = plt.subplots(n_samples, 3, figsize=(9, 3 * n_samples))
+        for i in range(n_samples):
+            axes[i, 0].imshow(x_sample[i, 0], cmap='gray')
+            axes[i, 0].set_title('image')
+            axes[i, 0].axis('off')
+            axes[i, 1].imshow(y_sample[i, 0], cmap='gray')
+            axes[i, 1].set_title('ground truth')
+            axes[i, 1].axis('off')
+            axes[i, 2].imshow(preds[i, 0], cmap='gray')
+            axes[i, 2].set_title('prediction')
+            axes[i, 2].axis('off')
+        plt.tight_layout()
+        os.makedirs(save_dir, exist_ok=True)
+        plt.savefig(os.path.join(save_dir, 'visualize.png'))
+        plt.show()
+
+    @staticmethod
+    def IoULoss(y_hat, y, eps=1e-6):
+        y_hat = y_hat.view(y_hat.size(0), -1)
+        y = y.view(y.size(0), -1)
+
+        intersection = (y_hat * y).sum(dim=1)
+        union = y_hat.sum(dim=1) + y.sum(dim=1) - intersection
+
+        iou = (intersection + eps) / (union + eps)
+
+        return 1 - iou.mean()
