@@ -17,7 +17,12 @@ OUTPUT_DIR = DATASET_ROOT
 
 
 transforms_pipeline = [
-    v2.RandomRotation(degrees=[90, 180, 270], interpolation=v2.InterpolationMode.BILINEAR),    
+    v2.RandomChoice([v2.RandomRotation(degrees=(180, 180), interpolation=v2.InterpolationMode.BILINEAR),
+                     v2.RandomRotation(degrees=(90, 90), interpolation=v2.InterpolationMode.BILINEAR),
+                     v2.RandomRotation(degrees=(-180, -180), interpolation=v2.InterpolationMode.BILINEAR),
+                     v2.RandomRotation(degrees=(-90, -90), interpolation=v2.InterpolationMode.BILINEAR)]
+                     )
+    ,
     v2.RandomHorizontalFlip(p=1.0),
     v2.RandomVerticalFlip(p=1.0),
 ]
