@@ -8,31 +8,25 @@ This repository contains a PyTorch-based deep learning pipeline designed to dete
 
 ```text
 Deep-Learning---Attention-Unet-mai
-│  Data.py
-│  environment.yml
-│  evaluate.py
-│  students_information.txt
-│  train.py
+│  Data.py                    # Downloads and prepares the preprocessed dataset.
+│  evaluate.py                # Evaluates a trained model and visualizes predictions.
+│  train.py                   # Trains the Attention U-Net model.
+│  environment.yml            # Conda environment configuration.
+│  students_information.txt   # Student information.
 │
 ├─ClassesData
-│  │  DatasetLoader.py
-│  │  Download.py
-│  │  PairCheck.py
-│  │  Preprocess.py
-│  │
-│  └─__pycache__
-│          DatasetLoader.cpython-312.pyc
-│          Download.cpython-312.pyc
-│          PairCheck.cpython-312.pyc
-│          Preprocess.cpython-312.pyc
+│  │  DatasetLoader.py        # Loads the serialized training and validation datasets.
+│  │  Download.py             # Downloads the dataset from Kaggle.
+│  │  PairCheck.py            # Verifies that every image has a corresponding segmentation mask.
+│  └─Preprocess.py            # Performs preprocessing, resizing, normalization, and data augmentation.
 │
 ├─ClassesML
-│  │  Blocks.py
-│  │  EarlyStopper.py
-│  │  Scope.py
-│  │  TrainerUNET.py
-│  │  UNET.py
-│  │  UNET_NoAttention.py
+│  │  Blocks.py               # Defines reusable neural network building blocks.
+│  │  EarlyStopper.py         # Implements early stopping during training.
+│  │  Scope.py                # Defines evaluation metrics and loss functions.
+│  │  TrainerUNET.py          # Implements the training and validation pipeline.
+│  │  UNET.py                 # Attention U-Net implementation.
+│  │  UNET_NoAttention.py     # Standard U-Net implementation without attention gates.
 │  └─__init__.py
 │
 ├─Dataset
@@ -43,20 +37,22 @@ Deep-Learning---Attention-Unet-mai
 │          val_label_batches.pt
 │
 ├─Model
-│  └─20260707_143753
+│  └─YYMMDD_HHMMSS
 │          unet.pth
 │
 ├─Result
 │  └─YYMMDD_HHMMSS
 │          loss.png
-│          note.txt
+│          accuracy.png
 │          visualize.png
 │
 └─Utilities
-    │  Utilities.py
+    │  Utilities.py           # Provides visualization functions, IoU Loss-related utilities, and other helper functions.
     └─__init__.py
 ```
-
+> **Note**
+>
+> The `Dataset/` directory is intentionally empty in the initial repository. After running `Data.py`, the preprocessed dataset will be downloaded, generated, and saved into this directory automatically.
 ---
 
 # Getting Started
