@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from ClassesData.DatasetLoader import DatasetLoader
 from ClassesML.UNET_NoAttention import UNET
 from ClassesML.Scope import ScopeUNET
-from ClassesML.TrainerClassifier import TrainerUNET
+from ClassesML.TrainerUNET import TrainerUNET
 from ClassesML.Visualization import visualize_predictions
 from ClassesData.Download import download_dataset
 from Utilities.Utilities import Utilities

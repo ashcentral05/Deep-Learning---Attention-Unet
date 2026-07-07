@@ -30,8 +30,8 @@ class DatasetLoader:
         else:
             train_data_batches = torch.load(os.path.join(self.root, 'train_data_batches.pt'))
             train_label_batches = torch.load(os.path.join(self.root, 'train_label_batches.pt'))
-            val_data_batches = torch.load(os.path.join(self.root, 'val_data_batches128.pt'))
-            val_label_batches = torch.load(os.path.join(self.root, 'val_label_batches128.pt'))
+            val_data_batches = torch.load(os.path.join(self.root, 'val_data_batches.pt'))
+            val_label_batches = torch.load(os.path.join(self.root, 'val_label_batches.pt'))
 
         train_data_batches = [batch.float() for batch in train_data_batches]
         val_data_batches = [batch.float() for batch in val_data_batches]

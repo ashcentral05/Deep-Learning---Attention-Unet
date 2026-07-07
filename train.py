@@ -4,7 +4,7 @@ import matplotlib
 matplotlib.use('Agg')
 import torch
 from ClassesData.DatasetLoader import DatasetLoader
-from ClassesML.UNET import UNET
+from ClassesML.UNET_V1 import UNET
 from ClassesML.Scope import ScopeUNET
 from ClassesML.TrainerUNET import TrainerUNET
 from Utilities.Utilities import Utilities
@@ -13,9 +13,9 @@ print(time.ctime())
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 path_parent_project = os.getcwd()
-dataset_image_path = path_parent_project + "\\Dataset\\" + "\\UNET\\"
+dataset_image_path = os.path.join(path_parent_project, "Dataset", "UNET")
 dataset = DatasetLoader(root=dataset_image_path)
-train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_data()
+train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_data(size=256)
 
 hyperparameters = dict(input_dim=1,
                         output_dim=1,
