@@ -65,6 +65,7 @@ This project uses Conda to manage package dependencies and ensure reproducibilit
 # Create the environment from the configuration file
 conda env create -f environment.yml
 ```
+This process may take up to **5 minutes**. 
 
 ```bash
 # Activate the environment
@@ -80,7 +81,7 @@ Before training, the dataset must be downloaded from Kaggle, and raw satellite i
 To execute the entire data pipeline at once, run the `Data.py` script:
 
 ```bash
-python Data.py
+python Data.py --augment
 ```
 
 **Note:**
