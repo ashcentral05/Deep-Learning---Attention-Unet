@@ -10,7 +10,7 @@ from ClassesData.DatasetLoader import DatasetLoader
 from ClassesML.UNET_NoAttention import UNET
 from ClassesML.Scope import ScopeUNET
 from ClassesML.TrainerUNET import TrainerUNET
-from ClassesML.Visualization import visualize_predictions
+#from ClassesML.Visualization import visualize_predictions
 from ClassesData.Download import download_dataset
 from Utilities.Utilities import Utilities
 import torch
@@ -23,9 +23,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 path_parent_project = os.getcwd()
 dataset_image_path = os.path.join(path_parent_project, "Dataset", "UNET")
 models_path = os.path.join(path_parent_project, "Models")
-download_dataset(path=dataset_image_path, size=128)
 dataset = DatasetLoader(root=dataset_image_path)
-train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_data(size=128)
+train_dataset, val_dataset, input_dim, n_classes = dataset.load_images_labels_data()
 
 hyperparameters = dict(input_dim = 1,
                         output_dim = 1,
@@ -62,7 +61,7 @@ train_accuracy_list, valid_accuracy_list, train_loss_list, valid_loss_list = tra
 trainer.save_model_weights(path=models_path)
 
 #visualization
-visualize_predictions(model, x_val[0], y_val[0], device, n_samples=4)
-Utilities.plot_curves(train_loss_list, valid_loss_list, train_accuracy_list, valid_accuracy_list)
+#visualize_predictions(model, x_val[0], y_val[0], device, n_samples=4)
+#Utilities.plot_curves(train_loss_list, valid_loss_list, train_accuracy_list, valid_accuracy_list)
 
 print(time.time())

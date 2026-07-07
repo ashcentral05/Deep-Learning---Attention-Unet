@@ -72,15 +72,13 @@ def build_tensors(split, is_train, size, augment):
 
     for idx, (image_path, label_path) in enumerate(pairs):
         image_tensor, mask_tensor = preprocess_sample(
-            image_path, label_path, size=size, augment=augment
+            image_path, label_path, size=size, augment=False
         )
 
         images.append(image_tensor[0])
         masks.append(mask_tensor[0])
 
-        if (
-            is_train and idx % 4 == 0
-        ):  # Data augmentation is made on 25% of the data in average.
+        if is_train and idx % 4 == 0 and augment:
             Augmented_img, Augmented_mask = preprocess_sample(
                 image_path, label_path, size=size, augment=True
             )
