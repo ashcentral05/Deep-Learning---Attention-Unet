@@ -4,88 +4,145 @@ This repository contains a PyTorch-based deep learning pipeline designed to dete
 
 ---
 
-## Repository Structure
+# Repository Structure
 
-<pre><code>├── ClassesData/
-│   ├── DatasetLoader.py       # Parametric multi-scale tensor loader & data pipelines
-│   ├── Download.py            # Utility script for dataset downloading
-│   ├── PairCheck.py           # Integrity script checking image-mask consistency
-│   └── Preprocess.py          # Serialisation, resizing (256x256), and normalization pipeline
+```text
+Deep-Learning---Attention-Unet-mai
+│  Data.py                    # Downloads and prepares the preprocessed dataset.
+│  evaluate.py                # Evaluates a trained model and visualizes predictions.
+│  train.py                   # Trains the Attention U-Net model.
+│  environment.yml            # Conda environment configuration.
+│  students_information.txt   # Student information.
 │
-├── ClassesML/
-│   ├── EarlyStopper.py        # Early stopping logic to prevent overfitting
-│   ├── Scope.py               # Performance and evaluation scoping functions
-│   ├── TrainerClassifier.py   # Main training, validation, and optimization loop
-│   ├── UNET_NoAttention.py    # Standard baseline U-Net implementation
-│   ├── UNET_V1.py             # Optimized or custom version of the model
-│   └── Visualization.py       # Metrics plotters and segmentation mask outputs
+├─ClassesData
+│  │  DatasetLoader.py        # Loads the serialized training and validation datasets.
+│  │  Download.py             # Downloads the dataset from Kaggle.
+│  │  PairCheck.py            # Verifies that every image has a corresponding segmentation mask.
+│  └─Preprocess.py            # Performs preprocessing, resizing, normalization, and data augmentation.
 │
-├── Dataset/UNET/              # Serialized tensor binaries (loaded directly into RAM)
-│   ├── train_data_batches.pt / train_data_batches128.pt
-│   ├── train_label_batches.pt / train_label_batches128.pt
-│   ├── val_data_batches.pt / val_data_batches128.pt
-│   └── val_label_batches.pt / val_label_batches128.pt
+├─ClassesML
+│  │  Blocks.py               # Defines reusable neural network building blocks.
+│  │  EarlyStopper.py         # Implements early stopping during training.
+│  │  Scope.py                # Defines evaluation metrics and loss functions.
+│  │  TrainerUNET.py          # Implements the training and validation pipeline.
+│  │  UNET.py                 # Attention U-Net implementation.
+│  │  UNET_NoAttention.py     # Standard U-Net implementation without attention gates.
+│  └─__init__.py
 │
-├── Models/                    # Directory reserved for saved model weights (.pth)
-├── Utilities/                 # Helper scripts and miscellaneous tools
+├─Dataset
+│  └─UNET
+│          train_data_batches.pt
+│          train_label_batches.pt
+│          val_data_batches.pt
+│          val_label_batches.pt
 │
-├── environment.yml            # Conda environment configuration file
-├── .gitignore                 # Specifies intentionally untracked files to ignore
-├── README.md                  # Project documentation (this file)
-├── UNET.py                    # Main executable script to launch experiments
-├── students_information.txt   # Team credentials and project info
-└── *_log.txt                  # Error and runtime execution logs</code></pre>
-
+├─Model
+│  └─YYMMDD_HHMMSS
+│          unet.pth
+│
+├─Result
+│  └─YYMMDD_HHMMSS
+│          loss.png
+│          accuracy.png
+│          visualize.png
+│
+└─Utilities
+    │  Utilities.py           # Provides visualization functions, IoU Loss-related utilities, and other helper functions.
+    └─__init__.py
+```
+> **Note**
+>
+> The `Dataset/` directory is intentionally empty in the initial repository. After running `Data.py`, the preprocessed dataset`.pt` will be downloaded, generated, and saved into this directory automatically.
 ---
 
-### Getting Started
+# Getting Started
 
 ## 1. Installation & Environment Setup
+
 This project uses Conda to manage package dependencies and ensure reproducibility. To recreate the exact environment, run the following commands in your terminal:
 
-<pre><code># Create the environment from the configuration file
-conda env create -f environment.yml </code></pre>
+```bash
+# Create the environment from the configuration file
+conda env create -f environment.yml
+```
+This process may take up to **5 minutes**. 
 
+```bash
 # Activate the environment
-<pre><code>
-conda activate oil_spill_env</code></pre>
+conda activate oil_spill_env
+```
+
+---
 
 ## 2. Data Downloading, Preprocessing & Serialization
 
 Before training, the dataset must be downloaded from Kaggle, and raw satellite image-mask pairs must be normalized, resized, and saved as serialized batches (`.pt` files).
 
 To execute the entire data pipeline at once, run the `Data.py` script:
-<pre><code>
-python Data.py </code></pre>
+
+```bash
+python Data.py --augment
+```
+
+**Note:**
+
+The pipeline resizes SAR images using bilinear interpolation and masks via nearest-neighbor interpolation. For augmented right-angle rotations, masks are explicitly re-thresholded to ensure boundaries stay strictly binary.
+
+There's a training set of 6455 images and a validation set of 1615 images. 5% of the training samples are augmented with random rotations, horisontal flip, and vertical flip，as a result, the final training set contains approximately 115% of the original data.
+
+This process may take **3-4 minutes**.
 
 ### Advanced Options & Arguments
+
 If the original dataset is too heavy for your local machine's RAM or GPU memory, or if you want to configure data augmentation, you can pass the following optional arguments through the terminal:
 
-* --size &lt;int&gt;: Defines the spatial resolution size for image resizing (default is 256). If your computer has performance bottlenecks, you can generate smaller images to speed up processing and training.
-* --augment: Enables data augmentation (rotations and flips) for the training set. By default, data augmentation is turned off (False).
+- `--size <int>`: Defines the spatial resolution size for image resizing (default is 256). If your computer has performance bottlenecks, you can generate smaller images to speed up processing and training.
+- `--augment`: Enables data augmentation (rotations and flips) for the training set. By default, data augmentation is turned off (False).
 
-#### Examples:
+#### Examples
+
+```bash
 python Data.py --size 128
-python Data.py --augment
-python Data.py --size 128 --augment
+```
 
-Note: The pipeline resizes SAR images using bilinear interpolation and masks via nearest-neighbor interpolation. For augmented right-angle rotations, masks are explicitly re-thresholded to ensure boundaries stay strictly binary.</code></pre>
+```bash
+python Data.py --augment
+```
+
+```bash
+python Data.py --size 128 --augment
+```
+
+---
 
 ## 3. Running the Training Loop
+
 To train the main Attention U-Net model using the default configurations, execute the top-level script:
 
-<pre><code>python train.py</code></pre>
+```bash
+python train.py
+```
+
+The trained model will be saved in `Model/timestamp`. The image of loss curves and validation curves will be saved in `Result/timestamp`.
 
 ---
 
 ## 4. Evaluation
+
 To evaluate the trained models, execute the top-level script:
 
-<pre><code>python evaluate.py</code></pre>
+```bash
+python evaluate.py YYMMDD_HHMMSS
+```
+
+**Please type the timestamp folder's name of the trained model you want to evaluate.**
+
+It will visualize the predictions, and save the image of visualization to `Result/timestamp`.
+
 ---
 
-###  Key Architectural Features
+# Key Architectural Features
 
 - **Memory-Bound Pipeline:** Pre-computed batches are mapped directly into RAM via DatasetLoader.py at startup, heavily speeding up epoch execution times.
 - **Geometric Invariance:** Robust data augmentation (synchronous flips and rotations) implemented within the processing flow to limit overfitting on limited radar patterns.
-- **Multi-Scale Support:** The data loader adaptively switches between 128 x 128 and 256 x 256 spatial tensor files depending on available GPU memory constraints.
+- **Multi-Scale Support:** The data loader adaptively switches between 128 × 128 and 256 × 256 spatial tensor files depending on available GPU memory constraints.
