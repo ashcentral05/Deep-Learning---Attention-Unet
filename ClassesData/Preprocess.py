@@ -6,7 +6,6 @@ import shutil
 from torchvision.transforms import v2
 from ClassesData.PairCheck import collect_pairs
 
-IMAGE_SIZE = (256, 256)
 SENSORS = ["palsar", "sentinel"]
 BATCH_SIZE = 16
 
@@ -17,21 +16,33 @@ OUTPUT_DIR = DATASET_ROOT
 
 
 transforms_pipeline = [
-    v2.RandomChoice([v2.RandomRotation(degrees=(180, 180), interpolation=v2.InterpolationMode.BILINEAR),
-                     v2.RandomRotation(degrees=(90, 90), interpolation=v2.InterpolationMode.BILINEAR),
-                     v2.RandomRotation(degrees=(-180, -180), interpolation=v2.InterpolationMode.BILINEAR),
-                     v2.RandomRotation(degrees=(-90, -90), interpolation=v2.InterpolationMode.BILINEAR)]
-                     )
-    ,
+    v2.RandomChoice(
+        [
+            v2.RandomRotation(
+                degrees=(180, 180), interpolation=v2.InterpolationMode.BILINEAR
+            ),
+            v2.RandomRotation(
+                degrees=(90, 90), interpolation=v2.InterpolationMode.BILINEAR
+            ),
+            v2.RandomRotation(
+                degrees=(-180, -180), interpolation=v2.InterpolationMode.BILINEAR
+            ),
+            v2.RandomRotation(
+                degrees=(-90, -90), interpolation=v2.InterpolationMode.BILINEAR
+            ),
+        ]
+    ),
     v2.RandomHorizontalFlip(p=1.0),
     v2.RandomVerticalFlip(p=1.0),
 ]
 
 
-def preprocess_sample(image_path, label_path, augment=False):
+def preprocess_sample(image_path, label_path, size=256, augment=False):
 
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     label = cv2.imread(label_path, cv2.IMREAD_GRAYSCALE)
+
+    IMAGE_SIZE = (size, size)
 
     image = image.astype(np.float32) / 255.0
     image = cv2.resize(image, IMAGE_SIZE, interpolation=cv2.INTER_LINEAR)
@@ -61,7 +72,7 @@ def preprocess_sample(image_path, label_path, augment=False):
     return [image_tensor], [mask_tensor]
 
 
-def build_tensors(split, is_train):
+def build_tensors(split, is_train, size, augment):
 
     pairs = collect_pairs(DATASET_ROOT, split, SENSORS)
 
@@ -69,7 +80,9 @@ def build_tensors(split, is_train):
     masks = []
 
     for idx, (image_path, label_path) in enumerate(pairs):
-        image_tensor, mask_tensor = preprocess_sample(image_path, label_path)
+        image_tensor, mask_tensor = preprocess_sample(
+            image_path, label_path, size=size, augment=augment
+        )
 
         images.append(image_tensor[0])
         masks.append(mask_tensor[0])
@@ -78,7 +91,7 @@ def build_tensors(split, is_train):
             is_train and idx % 4 == 0
         ):  # Data augmentation is made on 25% of the data in average.
             Augmented_img, Augmented_mask = preprocess_sample(
-                image_path, label_path, augment=True
+                image_path, label_path, size=size, augment=True
             )
 
             for i in range(len(Augmented_img)):
@@ -92,9 +105,16 @@ def make_batches(tensor, batch_size):
     return [tensor[i : i + batch_size] for i in range(0, tensor.shape[0], batch_size)]
 
 
-def preprocess():
-    train_images, train_masks = build_tensors("train", is_train=True)
-    val_images, val_masks = build_tensors("test", is_train=False)
+def preprocess(size=256, augment=False):
+    print("Preprocessing the dataset...")
+    train_images, train_masks = build_tensors(
+        "train", is_train=True, size=size, augment=augment
+    )
+    print("Train images shape:", train_images.shape)
+    val_images, val_masks = build_tensors(
+        "test", is_train=False, size=size, augment=augment
+    )
+    print("Validation images shape:", val_images.shape)
 
     train_data_batches = make_batches(train_images, BATCH_SIZE)
     train_label_batches = make_batches(train_masks, BATCH_SIZE)
@@ -119,3 +139,5 @@ def preprocess():
                 print(f"Error while deleting {full_path}: {e}")
         else:
             print(f"Folder does not exist (already deleted): {full_path}")
+
+    print("Preprocessing completed. Dataset saved in:", OUTPUT_DIR)

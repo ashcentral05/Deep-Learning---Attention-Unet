@@ -34,16 +34,20 @@ def download_dataset(path, from_drive=False, size=128):
         print("Download completed.")
 
     else:
-        kagglehub.dataset_download("bitsandlayers/sar-oil-spill-segmentation-dataset-sos", output_dir=path)
+        kagglehub.dataset_download(
+            "bitsandlayers/sar-oil-spill-segmentation-dataset-sos",
+            output_dir=path,
+            force_download=True,
+        )
 
         downloaded_path = os.path.join(path, "dataset")
         if downloaded_path and os.path.exists(downloaded_path):
             for item in os.listdir(downloaded_path):
                 source_item = os.path.join(downloaded_path, item)
                 target_item = os.path.join(path, item)
-                
+
                 shutil.move(source_item, target_item)
-            
+
             author_folder = os.path.join(path, "dataset")
             if os.path.exists(author_folder):
                 shutil.rmtree(author_folder)

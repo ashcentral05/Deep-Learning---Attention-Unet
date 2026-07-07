@@ -50,12 +50,26 @@ conda env create -f environment.yml </code></pre>
 <pre><code>
 conda activate oil_spill_env</code></pre>
 
-## 2. Data Downloading, Preprocessing & Serialisation
-Before training, the dataset must be downloaded from Kaggle and raw satellite pairs must be normalized, resized, and saved as serialized binaries (.pt files). To do all of this at the same time, run the file `Data.py`.
+## 2. Data Downloading, Preprocessing & Serialization
 
-<pre><code>python Data.py</code></pre>
+Before training, the dataset must be downloaded from Kaggle, and raw satellite image-mask pairs must be normalized, resized, and saved as serialized batches (`.pt` files).
 
-*Note: The script resizes images using bilinear interpolation and masks via nearest-neighbor interpolation to preserve strictly binary labels.*
+To execute the entire data pipeline at once, run the `Data.py` script:
+<pre><code>
+python Data.py </code></pre>
+
+### Advanced Options & Arguments
+If the original dataset is too heavy for your local machine's RAM or GPU memory, or if you want to configure data augmentation, you can pass the following optional arguments through the terminal:
+
+* --size &lt;int&gt;: Defines the spatial resolution size for image resizing (default is 256). If your computer has performance bottlenecks, you can generate smaller images to speed up processing and training.
+* --augment: Enables data augmentation (rotations and flips) for the training set. By default, data augmentation is turned off (False).
+
+#### Examples:
+python Data.py --size 128
+python Data.py --augment
+python Data.py --size 128 --augment
+
+Note: The pipeline resizes SAR images using bilinear interpolation and masks via nearest-neighbor interpolation. For augmented right-angle rotations, masks are explicitly re-thresholded to ensure boundaries stay strictly binary.</code></pre>
 
 ## 3. Running the Training Loop
 To train the main Attention U-Net model using the default configurations, execute the top-level script:
