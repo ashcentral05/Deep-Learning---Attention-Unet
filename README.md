@@ -52,7 +52,7 @@ Deep-Learning---Attention-Unet-mai
 ```
 > **Note**
 >
-> The `Dataset/` directory is intentionally empty in the initial repository. After running `Data.py`, the preprocessed dataset will be downloaded, generated, and saved into this directory automatically.
+> The `Dataset/` directory is intentionally empty in the initial repository. After running `Data.py`, the preprocessed dataset`.pt` will be downloaded, generated, and saved into this directory automatically.
 ---
 
 # Getting Started
